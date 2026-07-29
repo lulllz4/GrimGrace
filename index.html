@@ -485,6 +485,66 @@
     color: var(--crimson-lo);
 }
 .prose ul.hierarchy .tier-outcast p { opacity: 0.94; }
+
+  .story-arc {
+    border-top: 1px solid var(--hairline);
+}
+.story-arc:last-child {
+    border-bottom: 1px solid var(--hairline);
+}
+
+.story-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 22px 4px;
+    font-family: 'Cormorant SC', serif;
+    font-weight: 500;
+    font-size: clamp(1.15rem, 4vw, 1.5rem);
+    letter-spacing: 0.16em;
+    text-indent: 0.16em;
+    color: var(--bone);
+    transition: color 0.4s ease;
+}
+.story-toggle:hover { color: var(--crimson-hi); }
+
+.story-toggle-arrow {
+    font-family: sans-serif;
+    font-size: 1.1rem;
+    color: var(--crimson-hi);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    flex-shrink: 0;
+    margin-left: 16px;
+}
+.story-toggle.open .story-toggle-arrow {
+    transform: rotate(180deg);
+}
+
+.story-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.story-body > div {
+    overflow: hidden;
+    min-height: 0;
+}
+.story-body.open {
+    grid-template-rows: 1fr;
+}
+.story-body-inner {
+    padding-bottom: 34px;
+    padding-top: 6px;
+    opacity: 0;
+    transition: opacity 0.5s ease 0.1s;
+}
+.story-body.open .story-body-inner {
+    opacity: 1;
+}
   
   /* ================= ВЛОЖЕННЫЕ РАЗДЕЛЫ ================= */
 
@@ -604,7 +664,7 @@
 
 <div class="aura"></div>
 
-<!-- шаблон орнамента, используется через <use> -->
+
 <svg width="0" height="0" style="position:absolute">
   <defs>
     <g id="ornament">
@@ -635,12 +695,20 @@
 
 <main>
 
-  <section class="tab-content active" id="plot">
-    <article class="chapter">
-      <p class="chapter-label">Пролог</p>
-      <h2>Основной сюжет</h2>
-      <svg class="flourish" viewBox="0 0 400 40"><use href="#ornament"/></svg>
-      <div class="prose">
+<section class="tab-content active" id="plot">
+  <article class="chapter">
+    <p class="chapter-label">Пролог</p>
+    <h2>Основной сюжет</h2>
+    <svg class="flourish" viewBox="0 0 400 40"><use href="#ornament"/></svg>
+
+    <div class="story-arc">
+      <button class="story-toggle" data-target="arc-prolog">
+        <span>Пролог</span>
+        <span class="story-toggle-arrow">⌄</span>
+      </button>
+      <div class="story-body" id="arc-prolog">
+        <div class="story-body-inner">
+          <div class="prose">
         <div class="banner-img">
         <img src="https://lulllz4.github.io/GrimGrace/bannerPLOT1_GrimGrace.jpg" alt="">
         </div>
@@ -663,9 +731,27 @@
         <p class="stub">Впрочем, там, где полиция бессильно ищет улики, в подземельях под собором Святого Павла созревает куда более страшная угроза — секретный Орден Животворящего Креста. Это боевое крыло Церкви Англии действует в абсолютной тайне от парламента и закона. Для его фанатиков смерть королевы стала долгожданным знамением, а «Чёрная книга» — готовым расстрельным списком «нестареющих лордов» из клуба «Альбион». Вооружившись, Орден готов развязать подпольную инквизицию и очистить столицу огнем, не щадя ни монстров, ни вставших на пути хранителей порядка.</p>
         <p class="stub">Самым же надежным щитом для культа становится неосведомленная человеческая аристократия, для которой смерть Виктории — лишь повод для циничной наживы. Графы и банкиры города слетаются к пустеющему трону, как стервятники, заискивая перед Магистрами «Альбиона» ради чеков и министерских портфелей. Смертные лорды даже не подозревают, что в этой подкулисной грызне их просто используют. Наводя полицию на ложные следы и убирая свидетелей чужими руками, вампиры шаг за шагом подчиняют себе малолетнего принца, заставляя саму человеческую элиту душить собственную Империю.</p>
       </div>
-      <p class="end-mark">✦ ✦ ✦</p>
-    </article>
-  </section>
+        </div>
+      </div>
+    </div>
+
+    <div class="story-arc">
+      <button class="story-toggle" data-target="arc-1">
+        <span>Глава I (скоро откроется)</span>
+        <span class="story-toggle-arrow">⌄</span>
+      </button>
+      <div class="story-body" id="arc-1">
+        <div class="story-body-inner">
+          <div class="prose">
+            <p class="lead stub">...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="end-mark">✦ ✦ ✦</p>
+  </article>
+</section>
 
   <section class="tab-content" id="vampires">
     <article class="chapter">
