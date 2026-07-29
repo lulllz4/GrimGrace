@@ -401,71 +401,89 @@
     color: var(--crimson);
 }
 
+  .prose ul.hierarchy {
+    list-style: none;
+    margin: 0 0 1.6em;
+    padding: 0;
+}
 .prose ul.hierarchy li {
+    position: relative;
+    margin-bottom: 26px;
+}
+.prose ul.hierarchy li:last-child { margin-bottom: 0; }
+
+.prose ul.hierarchy .tier-name {
+    display: block;
+    font-family: 'Cormorant SC', serif;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+}
+.prose ul.hierarchy li p {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
-    position: relative;
-    line-height: 1.9;
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--bone-dim);
+    text-align: left;
+    margin: 0;
 }
 
-/* высший */
-.prose ul.hierarchy .tier-1 {
-    font-size: clamp(1.12rem, 4vw, 1.32rem);
+/* высший круг */
+.prose ul.hierarchy .tier-1 { padding-left: clamp(22px, 5vw, 32px); }
+.prose ul.hierarchy .tier-1 .tier-name {
+    font-size: clamp(1.2rem, 4vw, 1.4rem);
     color: var(--bone);
-    padding-left: clamp(20px, 5vw, 30px);
-    margin-bottom: 10px;
 }
-.prose ul.hierarchy .tier-1::before {
+.prose ul.hierarchy .tier-1 .tier-name::before {
     content: '✦';
     position: absolute;
     left: 0;
     color: var(--crimson-hi);
 }
 
-/* средний */
-.prose ul.hierarchy .tier-2 {
-    font-size: clamp(1.03rem, 3.7vw, 1.2rem);
+/* исполнительный совет */
+.prose ul.hierarchy .tier-2 { padding-left: clamp(30px, 7vw, 44px); }
+.prose ul.hierarchy .tier-2 .tier-name {
+    font-size: clamp(1.1rem, 3.6vw, 1.25rem);
     color: var(--bone);
-    padding-left: clamp(30px, 8vw, 46px);
-    margin-bottom: 10px;
 }
-.prose ul.hierarchy .tier-2::before {
+.prose ul.hierarchy .tier-2 .tier-name::before {
     content: '—';
     position: absolute;
-    left: clamp(12px, 3vw, 18px);
+    left: clamp(12px, 2.5vw, 16px);
     color: var(--crimson);
 }
 
-/* низший */
-.prose ul.hierarchy .tier-3 {
-    font-size: clamp(0.95rem, 3.4vw, 1.08rem);
+/* младший круг */
+.prose ul.hierarchy .tier-3 { padding-left: clamp(38px, 9vw, 56px); }
+.prose ul.hierarchy .tier-3 .tier-name {
+    font-size: clamp(1rem, 3.2vw, 1.12rem);
     color: var(--bone-dim);
-    padding-left: clamp(38px, 10vw, 62px);
-    margin-bottom: 10px;
 }
-.prose ul.hierarchy .tier-3::before {
+.prose ul.hierarchy .tier-3 .tier-name::before {
     content: '·';
     position: absolute;
-    left: clamp(24px, 6vw, 38px);
+    left: clamp(22px, 5vw, 34px);
     color: var(--bone-dim);
 }
 
-/* изгой — вне лестницы */
-.prose ul.hierarchy .tier-outcast {
-    font-size: clamp(0.9rem, 3.2vw, 1rem);
-    color: var(--bone-dim);
-    padding-left: clamp(20px, 5vw, 30px);
-    margin-top: 22px;
-    border-top: 1px solid var(--hairline);
-    padding-top: 16px;
-    opacity: 0.75;
+/* каста полукровок — вне лестницы, без линии */
+.prose ul.hierarchy .tier-outcast { padding-left: clamp(22px, 5vw, 32px); }
+.prose ul.hierarchy .tier-outcast .tier-name {
+    font-size: clamp(1rem, 3.2vw, 1.12rem);
+    color: var(--crimson-lo);
+    font-style: italic;
+    font-weight: 400;
 }
-.prose ul.hierarchy .tier-outcast::before {
+.prose ul.hierarchy .tier-outcast .tier-name::before {
     content: '†';
     position: absolute;
     left: 0;
     color: var(--crimson-lo);
 }
+.prose ul.hierarchy .tier-outcast p { opacity: 0.85; }
   
   /* ================= ВЛОЖЕННЫЕ РАЗДЕЛЫ ================= */
 
@@ -752,10 +770,22 @@
         
 <h4 class="micro-title">Власть и кастовая иерархия</h4>
 <ul class="hierarchy">
-  <li class="tier-1">Высший круг (Патриархи): совет из семи старейших вампиров Лондона (возраст от 300 лет и старше). Абсолютная власть культа. Именно они выносят смертные приговоры, толкуют волю Прародителя и решают, как кровососы будут паразитировать на Британской империи в новую эпоху.</li>
-  <li class="tier-2">Исполнительный совет (Магистры): чистокровные элитарии (150–250 лет). Серый кардиналат Лондона. Они контролируют банки, суды и медицину. В светском обществе они играют роли эксцентричных лордов и вдов, ведя дела через смертных марионеток и обеспечивая культу бесперебойный поток денег и безопасности.</li>
-  <li class="tier-3">Младший круг (Неофиты): вампиры до 100 лет. Не имеют политического голоса. Это силовое крыло клуба. Их главная задача на первый век жизни — научиться подавлять инстинкты, контролировать жажду и безупречно имитировать человеческое дыхание и пульс на публике. Часто имеют наставника в лице одного из Магистров.</li>
-  <li class="tier-outcast">Каста полукровок (Бастарды): живой грех и позор культа. Официально вампиры презирают связи со «скотом», но на деле регулярно посещают бордели. Бастарды — результат таких пороков. Они лишены прав, их презирают и не пускают в Капитул. Нередко они подвергаются казням, но есть и редкие исключения, которые обитают в стенах «Альбиона». Только вот, жизнь их скорее похожа на ад.</li>
+  <li class="tier-1">
+    <span class="tier-name">Высший круг (Патриархи)</span>
+    <p>Совет из семи старейших вампиров Лондона (возраст от 300 лет и старше). Абсолютная власть культа. Именно они выносят смертные приговоры, толкуют волю Прародителя и решают, как кровососы будут паразитировать на Британской империи в новую эпоху.</p>
+  </li>
+  <li class="tier-2">
+    <span class="tier-name">Исполнительный совет (Магистры)</span>
+    <p>Чистокровные элитарии (150–250 лет). Серый кардиналат Лондона. Они контролируют банки, суды и медицину. В светском обществе они играют роли эксцентричных лордов и вдов, ведя дела через смертных марионеток и обеспечивая культу бесперебойный поток денег и безопасности.</p>
+  </li>
+  <li class="tier-3">
+    <span class="tier-name">Младший круг (Неофиты)</span>
+    <p>Вампиры до 100 лет. Не имеют политического голоса. Это силовое крыло клуба. Их главная задача на первый век жизни — научиться подавлять инстинкты, контролировать жажду и безупречно имитировать человеческое дыхание и пульс на публике. Часто имеют наставника в лице одного из Магистров.</p>
+  </li>
+  <li class="tier-outcast">
+    <span class="tier-name">Каста полукровок (Бастарды)</span>
+    <p>Живой грех и позор культа. Официально вампиры презирают связи со «скотом», но на деле регулярно посещают бордели. Бастарды — результат таких пороков. Они лишены прав, их презирают и не пускают в Капитул. Нередко они подвергаются казням, но есть и редкие исключения, которые обитают в стенах «Альбиона». Только вот, жизнь их скорее похожа на ад.</p>
+  </li>
 </ul>
 
 
