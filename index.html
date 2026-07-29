@@ -1035,11 +1035,25 @@
     });
   });
 
+function toggleStoryArc(id) {
+  var toggleBtn = document.querySelector('.story-toggle[data-target="' + id + '"]');
+  var body = document.getElementById(id);
+  toggleBtn.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
 document.querySelectorAll('.story-toggle').forEach(function (btn) {
   btn.addEventListener('click', function () {
-    var body = document.getElementById(btn.dataset.target);
-    btn.classList.toggle('open');
-    body.classList.toggle('open');
+    toggleStoryArc(btn.dataset.target);
+  });
+});
+
+document.querySelectorAll('.story-close').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    toggleStoryArc(btn.dataset.target);
+    /* плавно прокручиваем обратно к заголовку главы, чтобы не остаться "в пустоте" */
+    var toggleBtn = document.querySelector('.story-toggle[data-target="' + btn.dataset.target + '"]');
+    toggleBtn.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
   
