@@ -1013,6 +1013,14 @@
     });
   });
 
+document.querySelectorAll('.story-toggle').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var body = document.getElementById(btn.dataset.target);
+    btn.classList.toggle('open');
+    body.classList.toggle('open');
+  });
+});
+  
   /* Вложенные статьи */
   var subButtons  = document.querySelectorAll('.sub-btn');
   var subContents = document.querySelectorAll('.sub-content');
