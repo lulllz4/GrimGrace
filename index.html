@@ -1,1 +1,507 @@
-/
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Лондон, 1852</title>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=UnifrakturMaguntia&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blood: #8a0303;
+    --blood-bright: #c41111;
+    --blood-dark: #4a0000;
+    --black: #0a0a0a;
+    --coal: #141212;
+    --smoke: #1e1a1a;
+    --parchment: #c9b8a3;
+    --parchment-dim: #8f8272;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--parchment);
+    font-family: 'Cormorant Garamond', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ======= ТУМАН ======= */
+  .fog-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.35;
+    background: radial-gradient(ellipse 80% 50% at 20% 100%, rgba(120,120,130,0.15), transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 90%, rgba(100,100,110,0.12), transparent 60%);
+    animation: fogDrift 40s ease-in-out infinite alternate;
+  }
+  .fog-layer.second {
+    animation-duration: 55s;
+    animation-direction: alternate-reverse;
+    opacity: 0.25;
+  }
+  @keyframes fogDrift {
+    0%   { transform: translateX(-5%) scale(1); }
+    100% { transform: translateX(5%) scale(1.15); }
+  }
+
+  /* ======= КРОВЬ, СТЕКАЮЩАЯ СВЕРХУ ======= */
+  .blood-drips {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 120px;
+    z-index: 50;
+    pointer-events: none;
+  }
+  .drip {
+    position: absolute;
+    top: 0;
+    width: 8px;
+    background: linear-gradient(to bottom, var(--blood-dark), var(--blood) 60%, var(--blood-bright));
+    border-radius: 0 0 50% 50%;
+    box-shadow: 0 0 12px rgba(138,3,3,0.6);
+    animation: dripGrow ease-in-out infinite;
+    transform-origin: top;
+  }
+  @keyframes dripGrow {
+    0%, 100% { height: 20px; }
+    50% { height: 90px; }
+  }
+  .drop {
+    position: fixed;
+    width: 7px; height: 10px;
+    background: radial-gradient(circle at 40% 30%, var(--blood-bright), var(--blood-dark));
+    border-radius: 50% 50% 60% 60%;
+    z-index: 49;
+    pointer-events: none;
+    animation: dropFall linear infinite;
+    opacity: 0;
+  }
+  @keyframes dropFall {
+    0% { transform: translateY(60px); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(100vh); opacity: 0; }
+  }
+
+  /* ======= ЛЕТАЮЩИЕ УГОЛЬКИ / ПЕПЕЛ ======= */
+  .ember {
+    position: fixed;
+    bottom: -10px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2;
+    animation: emberRise linear infinite;
+  }
+  @keyframes emberRise {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    10% { opacity: 0.8; }
+    100% { transform: translateY(-110vh) translateX(40px); opacity: 0; }
+  }
+
+  /* ======= ШАПКА ======= */
+  header {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 90px 20px 30px;
+  }
+  h1 {
+    font-family: 'UnifrakturMaguntia', cursive;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    color: var(--blood-bright);
+    text-shadow: 0 0 20px rgba(196,17,17,0.5), 0 0 60px rgba(138,3,3,0.4), 2px 2px 2px #000;
+    animation: titleFlicker 6s infinite;
+    letter-spacing: 3px;
+  }
+  @keyframes titleFlicker {
+    0%, 100% { opacity: 1; text-shadow: 0 0 20px rgba(196,17,17,0.5), 0 0 60px rgba(138,3,3,0.4), 2px 2px 2px #000; }
+    92% { opacity: 1; }
+    93% { opacity: 0.6; text-shadow: none; }
+    94% { opacity: 1; }
+    96% { opacity: 0.7; }
+    97% { opacity: 1; }
+  }
+  .subtitle {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    color: var(--parchment-dim);
+    font-size: 1.2rem;
+    margin-top: 10px;
+    letter-spacing: 2px;
+  }
+  .ornament {
+    color: var(--blood);
+    font-size: 1.5rem;
+    margin: 15px 0;
+    animation: pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+
+  /* ======= НАВИГАЦИЯ ======= */
+  nav {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    padding: 10px 20px 0;
+    border-bottom: 1px solid var(--blood-dark);
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .tab-btn {
+    background: var(--coal);
+    color: var(--parchment-dim);
+    border: 1px solid var(--blood-dark);
+    border-bottom: none;
+    padding: 12px 24px;
+    font-family: 'IM Fell English', serif;
+    font-size: 1.05rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.4s, background 0.4s, text-shadow 0.4s;
+    border-radius: 6px 6px 0 0;
+  }
+  .tab-btn::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%;
+    width: 0; height: 2px;
+    background: var(--blood-bright);
+    box-shadow: 0 0 10px var(--blood-bright);
+    transition: width 0.4s, left 0.4s;
+  }
+  .tab-btn:hover { color: var(--parchment); background: var(--smoke); }
+  .tab-btn:hover::before { width: 100%; left: 0; }
+  .tab-btn.active {
+    color: var(--blood-bright);
+    background: var(--smoke);
+    text-shadow: 0 0 10px rgba(196,17,17,0.6);
+  }
+  .tab-btn.active::before { width: 100%; left: 0; }
+
+  /* ======= КОНТЕНТ ======= */
+  main {
+    position: relative;
+    z-index: 10;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 25px 80px;
+  }
+  .tab-content {
+    display: none;
+  }
+  .tab-content.active {
+    display: block;
+    animation: contentReveal 0.9s ease both;
+  }
+  @keyframes contentReveal {
+    0% { opacity: 0; transform: translateY(25px); filter: blur(6px); }
+    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
+
+  .card {
+    background: linear-gradient(160deg, var(--smoke), var(--coal));
+    border: 1px solid var(--blood-dark);
+    border-radius: 4px;
+    padding: 35px;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8), inset 0 0 60px rgba(74,0,0,0.15);
+  }
+  .card::before, .card::after {
+    content: '❦';
+    position: absolute;
+    color: var(--blood);
+    font-size: 1.3rem;
+    opacity: 0.7;
+  }
+  .card::before { top: 8px; left: 14px; }
+  .card::after { bottom: 8px; right: 14px; transform: rotate(180deg); }
+
+  h2 {
+    font-family: 'UnifrakturMaguntia', cursive;
+    color: var(--blood-bright);
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    text-shadow: 0 0 15px rgba(138,3,3,0.5);
+  }
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--blood), transparent);
+    margin: 18px 0 25px;
+    position: relative;
+  }
+  .divider::after {
+    content: '✠';
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--coal);
+    padding: 0 12px;
+    color: var(--blood);
+    font-size: 0.9rem;
+  }
+  .card p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--parchment);
+    text-align: justify;
+    margin-bottom: 15px;
+  }
+  .placeholder {
+    color: var(--parchment-dim);
+    font-style: italic;
+    border-left: 3px solid var(--blood-dark);
+    padding-left: 15px;
+  }
+
+  /* ======= ВЛОЖЕННЫЕ ВКЛАДКИ ======= */
+  .sub-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 25px;
+  }
+  .sub-btn {
+    background: transparent;
+    color: var(--parchment-dim);
+    border: 1px solid var(--blood-dark);
+    padding: 8px 18px;
+    font-family: 'IM Fell English', serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.35s;
+  }
+  .sub-btn:hover {
+    color: var(--parchment);
+    border-color: var(--blood);
+    box-shadow: 0 0 12px rgba(138,3,3,0.35);
+  }
+  .sub-btn.active {
+    background: var(--blood-dark);
+    color: var(--parchment);
+    border-color: var(--blood-bright);
+    box-shadow: 0 0 15px rgba(196,17,17,0.4), inset 0 0 10px rgba(0,0,0,0.5);
+  }
+  .sub-content { display: none; }
+  .sub-content.active {
+    display: block;
+    animation: contentReveal 0.7s ease both;
+  }
+
+  /* ======= СВЕЧА (декор) ======= */
+  .candle-glow {
+    position: fixed;
+    bottom: -100px;
+    right: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(196,80,17,0.12), transparent 70%);
+    border-radius: 50%;
+    z-index: 1;
+    pointer-events: none;
+    animation: candleFlicker 3s ease-in-out infinite;
+  }
+  @keyframes candleFlicker {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    25% { opacity: 0.5; transform: scale(0.95); }
+    50% { opacity: 1; transform: scale(1.05); }
+    75% { opacity: 0.6; }
+  }
+
+  footer {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 25px;
+    color: var(--parchment-dim);
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    border-top: 1px solid var(--blood-dark);
+  }
+
+  @media (max-width: 600px) {
+    .tab-btn { padding: 10px 14px; font-size: 0.9rem; }
+    .card { padding: 25px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="fog-layer"></div>
+<div class="fog-layer second"></div>
+<div class="blood-drips" id="bloodDrips"></div>
+<div class="candle-glow"></div>
+
+<header>
+  <h1>Лондон, 1852</h1>
+  <p class="subtitle">— Кровь под туманом викторианской ночи —</p>
+  <div class="ornament">☙ ✠ ❧</div>
+</header>
+
+<nav>
+  <button class="tab-btn active" data-tab="plot">Основной сюжет</button>
+  <button class="tab-btn" data-tab="vampires">Вампиры</button>
+  <button class="tab-btn" data-tab="humans">Люди</button>
+  <button class="tab-btn" data-tab="halfbloods">Полукровки</button>
+  <button class="tab-btn" data-tab="extra">Дополнительная информация</button>
+</nav>
+
+<main>
+  <!-- ОСНОВНОЙ СЮЖЕТ -->
+  <section class="tab-content active" id="plot">
+    <div class="card">
+      <h2>Основной сюжет</h2>
+      <div class="divider"></div>
+      <p class="placeholder">(заглушка1)</p>
+      <p class="placeholder">(заглушка2)</p>
+    </div>
+  </section>
+
+  <!-- ВАМПИРЫ -->
+  <section class="tab-content" id="vampires">
+    <div class="card">
+      <h2>Вампиры</h2>
+      <div class="divider"></div>
+      <p class="placeholder">(заглушка3)</p>
+      <p class="placeholder">(заглушка4)</p>
+    </div>
+  </section>
+
+  <!-- ЛЮДИ -->
+  <section class="tab-content" id="humans">
+    <div class="card">
+      <h2>Люди</h2>
+      <div class="divider"></div>
+      <p class="placeholder">(заглушка5)</p>
+      <p class="placeholder">(заглушка6)</p>
+    </div>
+  </section>
+
+  <!-- ПОЛУКРОВКИ -->
+  <section class="tab-content" id="halfbloods">
+    <div class="card">
+      <h2>Полукровки</h2>
+      <div class="divider"></div>
+      <p class="placeholder">(заглушка7)</p>
+      <p class="placeholder">(заглушка8)</p>
+    </div>
+  </section>
+
+  <!-- ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ (с вложенными вкладками) -->
+  <section class="tab-content" id="extra">
+    <div class="card">
+      <h2>Дополнительная информация</h2>
+      <div class="divider"></div>
+
+      <div class="sub-nav">
+        <button class="sub-btn active" data-sub="article1">Статья I</button>
+        <button class="sub-btn" data-sub="article2">Статья II</button>
+        <button class="sub-btn" data-sub="article3">Статья III</button>
+        <button class="sub-btn" data-sub="article4">Статья IV</button>
+      </div>
+
+      <div class="sub-content active" id="article1">
+        <p class="placeholder">(заглушка9)</p>
+      </div>
+      <div class="sub-content" id="article2">
+        <p class="placeholder">(заглушка10)</p>
+      </div>
+      <div class="sub-content" id="article3">
+        <p class="placeholder">(заглушка11)</p>
+      </div>
+      <div class="sub-content" id="article4">
+        <p class="placeholder">(заглушка12)</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  «Туман скрывает многое. Но не всё…»
+</footer>
+
+<script>
+  /* ======= ГЕНЕРАЦИЯ КАПЕЛЬ КРОВИ ======= */
+  const dripsContainer = document.getElementById('bloodDrips');
+  const dripCount = 14;
+
+  for (let i = 0; i < dripCount; i++) {
+    const drip = document.createElement('div');
+    drip.className = 'drip';
+    const left = Math.random() * 100;
+    drip.style.left = left + '%';
+    drip.style.animationDuration = (4 + Math.random() * 6) + 's';
+    drip.style.animationDelay = (Math.random() * 5) + 's';
+    drip.style.width = (4 + Math.random() * 6) + 'px';
+    dripsContainer.appendChild(drip);
+
+    // падающая капля под некоторыми "потёками"
+    if (Math.random() > 0.4) {
+      const drop = document.createElement('div');
+      drop.className = 'drop';
+      drop.style.left = left + '%';
+      drop.style.animationDuration = (5 + Math.random() * 6) + 's';
+      drop.style.animationDelay = (Math.random() * 8) + 's';
+      document.body.appendChild(drop);
+    }
+  }
+
+  /* ======= ГЕНЕРАЦИЯ УГОЛЬКОВ ======= */
+  const emberCount = 20;
+  for (let i = 0; i < emberCount; i++) {
+    const ember = document.createElement('div');
+    ember.className = 'ember';
+    const size = 2 + Math.random() * 4;
+    ember.style.width = size + 'px';
+    ember.style.height = size + 'px';
+    ember.style.left = Math.random() * 100 + '%';
+    // угольки — красные и пепельно-серые
+    ember.style.background = Math.random() > 0.5
+      ? 'radial-gradient(circle, #c41111, #4a0000)'
+      : 'radial-gradient(circle, #777, #333)';
+    ember.style.boxShadow = Math.random() > 0.5 ? '0 0 6px rgba(196,17,17,0.7)' : 'none';
+    ember.style.animationDuration = (8 + Math.random() * 14) + 's';
+    ember.style.animationDelay = (Math.random() * 15) + 's';
+    document.body.appendChild(ember);
+  }
+
+  /* ======= ОСНОВНЫЕ ВКЛАДКИ ======= */
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabButtons.forEach(b => b.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  /* ======= ВЛОЖЕННЫЕ ВКЛАДКИ ======= */
+  const subButtons = document.querySelectorAll('.sub-btn');
+  const subContents = document.querySelectorAll('.sub-content');
+
+  subButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      subButtons.forEach(b => b.classList.remove('active'));
+      subContents.forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.sub).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
