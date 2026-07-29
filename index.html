@@ -281,14 +281,14 @@
     hyphens: auto;
   }
 
-  .prose p.lead::first-letter {
-    font-family: 'Monsieur La Doulaise', cursive;
-    font-size: 4.6em;
-    float: left;
-    line-height: 0.75;
-    margin: 0.08em 0.12em 0 0;
-    color: var(--crimson-hi);
-  }
+.prose p.lead::first-letter {
+  font-family: 'newcyrillicgoth', cursive; /* старый шрифт остаётся запасным */
+  font-size: 4.6em;
+  float: left;
+  line-height: 0.75;
+  margin: 0.08em 0.12em 0 0;
+  color: var(--crimson-hi);
+}
 
   .stub {
     color: var(--bone-dim);
@@ -367,6 +367,14 @@
     margin-bottom: 30px;
   }
 
+@font-face {
+  font-family: 'newcyrillicgoth';                     /* имя придумываешь сам */
+  src: url('newcyrillicgoth.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;                           /* текст виден, пока шрифт грузится */
+}
+  
   /* ================= ПОДВАЛ ================= */
 
   footer {
@@ -388,6 +396,17 @@
     letter-spacing: 0.18em;
     color: var(--bone-dim);
   }
+
+  /* Крупный текст статей только на десктопе */
+@media (min-width: 1024px) {
+  .prose p {
+    font-size: 1.45rem;   /* подбери по вкусу: 1.4–1.6rem */
+    line-height: 1.9;
+  }
+  main {
+    max-width: 860px;     /* чуть шире колонка, чтобы строки не стали слишком короткими */
+  }
+}
 
   @media (max-width: 640px) {
     nav { column-gap: 16px; }
