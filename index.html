@@ -331,6 +331,32 @@
     background: linear-gradient(to bottom, rgba(7,5,8,0.05), rgba(7,5,8,0.25));
     pointer-events: none;
 }
+
+.prose h3.section-title {
+    font-family: 'Cormorant SC', serif;
+    font-weight: 500;
+    font-size: 1.35rem;
+    letter-spacing: 0.14em;
+    text-indent: 0.14em;
+    color: var(--crimson-hi);
+    text-align: left;
+    margin: 44px 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.prose h3.section-title::before {
+    content: '✦';
+    font-size: 0.7rem;
+    color: var(--crimson);
+    flex-shrink: 0;
+}
+.prose h3.section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--hairline), transparent);
+}
   
   /* ================= ВЛОЖЕННЫЕ РАЗДЕЛЫ ================= */
 
@@ -519,8 +545,10 @@
       <h2>Вампиры</h2>
       <svg class="flourish" viewBox="0 0 400 40"><use href="#ornament"/></svg>
       <div class="prose">
-        <p class="lead stub">(заглушка3)</p>
-        <p class="stub">(заглушка4)</p>
+        <h3 class="section-title">Кто такие вампиры?</h3>
+        <p class="lead stub">Вампиры — не порождение магии или дьявольского контракта. Их долгожительство заложено в самой крови и передается исключительно по наследству, из поколения в поколение, как неизлечимая мутация. Они — обособленная ветвь человечества, что когда-то совершила невероятный эволюционный скачок.</p>
+        <p class="stub">Сами вампиры считают себя Богами и теми, кто должен занять людское место.</p>
+        <h3 class="section-title">О телах вампиров</h3>
       </div>
       <p class="end-mark">✦ ✦ ✦</p>
     </article>
