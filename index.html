@@ -701,13 +701,23 @@
 
   /* ================= КУРСОР-ЛАПКА ================= */
 
-body { cursor: url('cursor.png') 4 4, auto; }
+/* Обычный курсор для всей страницы */
+body {
+  cursor: url('cursor.png') 4 4, auto;
+}
 
-body:hover {
+/* Обычное состояние кнопки (на случай, если курсор не наследуется) */
+button {
+  cursor: url('cursor.png') 4 4, auto;
+}
+
+/* При наведении на кнопку */
+button:hover {
   cursor: url('cursor2.png') 4 4, pointer;
 }
-  
-body:active {
+
+/* При нажатии на кнопку — обязательно должно идти ПОСЛЕ :hover */
+button:active {
   cursor: url('cursor3.png') 4 4, pointer;
 }
   
