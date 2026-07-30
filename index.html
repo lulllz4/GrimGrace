@@ -918,6 +918,43 @@
 }
 
   @media (max-width: 640px) {
+    .sub-nav {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 4px 24px 14px;
+        margin: 0 -24px 40px;
+        gap: 0;
+    }
+    .sub-nav::-webkit-scrollbar { display: none; }
+
+    .sub-sep { display: none; }
+
+    .sub-btn {
+        flex-shrink: 0;
+        scroll-snap-align: center;
+        white-space: nowrap;
+        padding: 8px 18px;
+        margin-right: 8px;
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        color: var(--bone-dim);
+        transition: color 0.4s ease, border-color 0.4s ease, background 0.4s ease;
+    }
+    .sub-btn:last-child { margin-right: 0; }
+
+    .sub-btn.active {
+        color: var(--ink);
+        background: var(--crimson-hi);
+        border-color: var(--crimson-hi);
+    }
+    .sub-btn.active::after { display: none; }
+}
+
+  @media (max-width: 640px) {
     nav { column-gap: 16px; }
     .tab-btn { padding: 14px 2px; font-size: 0.78rem; letter-spacing: 0.2em; }
     .prose p { font-size: 1.08rem; text-align: left; }
@@ -1529,15 +1566,18 @@ document.querySelectorAll('.story-close').forEach(function (btn) {
   var subButtons  = document.querySelectorAll('.sub-btn');
   var subContents = document.querySelectorAll('.sub-content');
 
-  subButtons.forEach(function (btn) {
+subButtons.forEach(function (btn) {
     btn.addEventListener('click', function () {
       if (btn.classList.contains('active')) return;
       subButtons.forEach(function (b) { b.classList.remove('active'); });
       subContents.forEach(function (c) { c.classList.remove('active'); });
       btn.classList.add('active');
       document.getElementById(btn.dataset.sub).classList.add('active');
+
+      /* автопрокрутка активной вкладки в центр видимой области — только мобильный сценарий */
+      btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     });
-  });
+});
 
   /* Первое появление */
   window.addEventListener('load', function () {
