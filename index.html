@@ -654,6 +654,119 @@
     color: var(--bone-dim);
 }
 .prose ul.hierarchy-2 .rank-4 p { opacity: 0.85; }
+
+
+  .ambient-player {
+    position: fixed;
+    right: clamp(14px, 3vw, 28px);
+    bottom: clamp(14px, 3vw, 28px);
+    z-index: 95;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.player-toggle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--crimson-hi);
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    transition: border-color 0.4s ease, transform 0.3s ease;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+}
+.player-toggle:hover { border-color: var(--crimson); }
+.player-toggle.playing { animation: playerPulse 2.4s ease-in-out infinite; }
+@keyframes playerPulse {
+    0%, 100% { box-shadow: 0 4px 18px rgba(110,15,31,0.25); }
+    50%      { box-shadow: 0 4px 26px rgba(110,15,31,0.55); }
+}
+
+.player-panel {
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    padding: 16px 18px;
+    width: 240px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.55);
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.player-panel.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.player-label {
+    font-family: 'Cormorant SC', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.28em;
+    text-indent: 0.28em;
+    color: var(--bone-dim);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+.player-track {
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--bone);
+    margin-bottom: 14px;
+    min-height: 1.4em;
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 12px;
+}
+.player-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--bone-dim);
+    font-size: 1.15rem;
+    transition: color 0.3s ease;
+    line-height: 1;
+}
+.player-btn:hover { color: var(--crimson-hi); }
+.player-btn.main {
+    color: var(--crimson-hi);
+    font-size: 1.6rem;
+}
+
+.player-progress-track {
+    width: 100%;
+    height: 2px;
+    background: var(--hairline);
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
+}
+.player-progress-fill {
+    position: absolute;
+    left: 0; top: 0;
+    height: 100%;
+    width: 0%;
+    background: var(--crimson-hi);
+    border-radius: 2px;
+}
+
+@media (max-width: 640px) {
+    .player-panel { width: 200px; }
+}
   
   /* ================= ВЛОЖЕННЫЕ РАЗДЕЛЫ ================= */
 
@@ -1266,6 +1379,24 @@
 
 </main>
 
+<div class="ambient-player">
+  <div class="player-panel" id="playerPanel">
+    <p class="player-label">Ambient</p>
+    <p class="player-track" id="playerTrack">—</p>
+    <div class="player-controls">
+      <button class="player-btn" id="playerPrev" aria-label="Предыдущий трек">❮</button>
+      <button class="player-btn main" id="playerPlay" aria-label="Воспроизвести">▶</button>
+      <button class="player-btn" id="playerNext" aria-label="Следующий трек">❯</button>
+    </div>
+    <div class="player-progress-track" id="playerProgressTrack">
+      <div class="player-progress-fill" id="playerProgressFill"></div>
+    </div>
+  </div>
+  <button class="player-toggle" id="playerToggle" aria-label="Открыть плеер">♪</button>
+</div>
+
+<audio id="playerAudio" preload="none"></audio>
+  
 <footer>
   <div class="rule"></div>
   <p>London · 1852</p>
@@ -1357,6 +1488,72 @@ document.querySelectorAll('.story-close').forEach(function (btn) {
       revealChapter(document.querySelector('.tab-content.active'));
     }, 2600); /* после того, как соберётся заголовок */
   });
+
+/* Ambient-плеер */
+(function () {
+  var BASE = 'https://lulllz4.github.io/GrimGrace/';
+  var TRACKS = ['ambient1'];
+
+  var audio        = document.getElementById('playerAudio');
+  var toggleBtn     = document.getElementById('playerToggle');
+  var panel         = document.getElementById('playerPanel');
+  var trackLabel    = document.getElementById('playerTrack');
+  var playBtn       = document.getElementById('playerPlay');
+  var prevBtn       = document.getElementById('playerPrev');
+  var nextBtn       = document.getElementById('playerNext');
+  var progressTrack = document.getElementById('playerProgressTrack');
+  var progressFill  = document.getElementById('playerProgressFill');
+
+  var current = 0;
+
+  function loadTrack(index, autoplay) {
+    current = (index + TRACKS.length) % TRACKS.length;
+    audio.src = BASE + TRACKS[current] + '.mp3';
+    trackLabel.textContent = TRACKS[current];
+    if (autoplay) audio.play();
+  }
+
+  function updatePlayIcon() {
+    playBtn.textContent = audio.paused ? '▶' : '❚❚';
+    toggleBtn.classList.toggle('playing', !audio.paused);
+  }
+
+  toggleBtn.addEventListener('click', function () {
+    panel.classList.toggle('open');
+    if (!audio.src) loadTrack(0, false);
+  });
+
+  playBtn.addEventListener('click', function () {
+    if (audio.paused) { audio.play(); } else { audio.pause(); }
+  });
+
+  prevBtn.addEventListener('click', function () { loadTrack(current - 1, true); });
+  nextBtn.addEventListener('click', function () { loadTrack(current + 1, true); });
+
+  audio.addEventListener('play',  updatePlayIcon);
+  audio.addEventListener('pause', updatePlayIcon);
+  audio.addEventListener('ended', function () { loadTrack(current + 1, true); });
+
+  audio.addEventListener('timeupdate', function () {
+    if (!audio.duration) return;
+    progressFill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+  });
+
+  progressTrack.addEventListener('click', function (e) {
+    if (!audio.duration) return;
+    var rect = progressTrack.getBoundingClientRect();
+    var ratio = (e.clientX - rect.left) / rect.width;
+    audio.currentTime = ratio * audio.duration;
+  });
+
+  /* закрытие панели по клику вне плеера */
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.ambient-player')) {
+      panel.classList.remove('open');
+    }
+  });
+})();
+  
 })();
 </script>
 
