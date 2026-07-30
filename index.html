@@ -722,6 +722,8 @@
     gap: 14px;
     flex-shrink: 0;
 }
+
+  
 .player-btn {
     background: none;
     border: none;
@@ -759,6 +761,57 @@
     .player-cover { width: 46px; height: 46px; }
     .player-title { font-size: 0.98rem; }
     .player-controls { gap: 10px; }
+}
+
+
+  .player-volume {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.player-volume-icon {
+    color: var(--bone-dim);
+    font-size: 0.95rem;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.player-volume-icon:hover { color: var(--crimson-hi); }
+
+.player-volume input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 54px;
+    height: 3px;
+    background: var(--hairline);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+}
+.player-volume input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--crimson-hi);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.player-volume input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+.player-volume input[type="range"]::-moz-range-thumb {
+    width: 11px;
+    height: 11px;
+    border: none;
+    border-radius: 50%;
+    background: var(--crimson-hi);
+    cursor: pointer;
+}
+
+@media (max-width: 480px) {
+    .player-volume input[type="range"] { width: 40px; }
 }
   
   /* ================= ВЛОЖЕННЫЕ РАЗДЕЛЫ ================= */
@@ -909,6 +962,24 @@
         <p class="player-author" id="playerAuthor">—</p>
       </div>
       <div class="player-controls">
+        <div class="player-row">
+  <div class="player-cover">
+    <img id="playerCover" src="" alt="">
+  </div>
+  <div class="player-meta">
+    <p class="player-title" id="playerTitle">—</p>
+    <p class="player-author" id="playerAuthor">—</p>
+  </div>
+  <div class="player-controls">
+    <button class="player-btn" id="playerPrev" aria-label="Предыдущий трек">❮</button>
+    <button class="player-btn main" id="playerPlay" aria-label="Воспроизвести">▶</button>
+    <button class="player-btn" id="playerNext" aria-label="Следующий трек">❯</button>
+  </div>
+  <div class="player-volume">
+    <span class="player-volume-icon" id="playerMute">♪</span>
+    <input type="range" id="playerVolume" min="0" max="1" step="0.01" value="0.6">
+  </div>
+</div>
         <button class="player-btn" id="playerPrev" aria-label="Предыдущий трек">❮</button>
         <button class="player-btn main" id="playerPlay" aria-label="Воспроизвести">▶</button>
         <button class="player-btn" id="playerNext" aria-label="Следующий трек">❯</button>
@@ -1525,6 +1596,31 @@ document.querySelectorAll('.story-close').forEach(function (btn) {
 
   var current = 0;
 
+var volumeSlider = document.getElementById('playerVolume');
+var muteIcon     = document.getElementById('playerMute');
+var lastVolume   = 0.6;
+
+audio.volume = volumeSlider.value;
+
+volumeSlider.addEventListener('input', function () {
+  audio.volume = volumeSlider.value;
+  audio.muted = false;
+  muteIcon.textContent = audio.volume == 0 ? '✕' : '♪';
+});
+
+muteIcon.addEventListener('click', function () {
+  if (audio.volume > 0) {
+    lastVolume = audio.volume;
+    audio.volume = 0;
+    volumeSlider.value = 0;
+    muteIcon.textContent = '✕';
+  } else {
+    audio.volume = lastVolume;
+    volumeSlider.value = lastVolume;
+    muteIcon.textContent = '♪';
+  }
+});
+  
   function loadTrack(index, autoplay) {
     current = (index + TRACKS.length) % TRACKS.length;
     var t = TRACKS[current];
