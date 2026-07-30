@@ -962,27 +962,13 @@
         <p class="player-author" id="playerAuthor">—</p>
       </div>
       <div class="player-controls">
-        <div class="player-row">
-  <div class="player-cover">
-    <img id="playerCover" src="" alt="">
-  </div>
-  <div class="player-meta">
-    <p class="player-title" id="playerTitle">—</p>
-    <p class="player-author" id="playerAuthor">—</p>
-  </div>
-  <div class="player-controls">
-    <button class="player-btn" id="playerPrev" aria-label="Предыдущий трек">❮</button>
-    <button class="player-btn main" id="playerPlay" aria-label="Воспроизвести">▶</button>
-    <button class="player-btn" id="playerNext" aria-label="Следующий трек">❯</button>
-  </div>
-  <div class="player-volume">
-    <span class="player-volume-icon" id="playerMute">♪</span>
-    <input type="range" id="playerVolume" min="0" max="1" step="0.01" value="0.6">
-  </div>
-</div>
         <button class="player-btn" id="playerPrev" aria-label="Предыдущий трек">❮</button>
         <button class="player-btn main" id="playerPlay" aria-label="Воспроизвести">▶</button>
         <button class="player-btn" id="playerNext" aria-label="Следующий трек">❯</button>
+      </div>
+      <div class="player-volume">
+        <span class="player-volume-icon" id="playerMute">♪</span>
+        <input type="range" id="playerVolume" min="0" max="1" step="0.01" value="0.6">
       </div>
     </div>
     <div class="player-progress-track" id="playerProgressTrack">
@@ -992,7 +978,6 @@
 </header>
 
 <audio id="playerAudio" preload="none"></audio>
-</header>
 
 <nav>
   <button class="tab-btn active" data-tab="plot"><span class="num">I</span>Сюжет</button>
