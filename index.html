@@ -917,39 +917,35 @@
   }
 }
 
-  @media (max-width: 640px) {
+@media (max-width: 640px) {
     .sub-nav {
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        padding: 4px 24px 14px;
-        margin: 0 -24px 40px;
-        gap: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 10px;
+        margin: 0 0 40px;
+        padding: 0;
     }
-    .sub-nav::-webkit-scrollbar { display: none; }
 
     .sub-sep { display: none; }
 
     .sub-btn {
-        flex-shrink: 0;
-        scroll-snap-align: center;
         white-space: nowrap;
-        padding: 8px 18px;
-        margin-right: 8px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 0.88rem;
+        letter-spacing: 0.04em;
+        padding: 11px 10px;
+        text-align: center;
         border: 1px solid var(--hairline);
-        border-radius: 999px;
+        border-radius: 4px;
         color: var(--bone-dim);
         transition: color 0.4s ease, border-color 0.4s ease, background 0.4s ease;
     }
-    .sub-btn:last-child { margin-right: 0; }
 
     .sub-btn.active {
-        color: var(--ink);
-        background: var(--crimson-hi);
-        border-color: var(--crimson-hi);
+        color: var(--crimson-hi);
+        background: rgba(161, 27, 49, 0.08);
+        border-color: var(--crimson-lo);
     }
     .sub-btn.active::after { display: none; }
 }
@@ -1573,9 +1569,6 @@ subButtons.forEach(function (btn) {
       subContents.forEach(function (c) { c.classList.remove('active'); });
       btn.classList.add('active');
       document.getElementById(btn.dataset.sub).classList.add('active');
-
-      /* автопрокрутка активной вкладки в центр видимой области — только мобильный сценарий */
-      btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     });
 });
 
