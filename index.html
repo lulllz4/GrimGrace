@@ -698,28 +698,6 @@
     color: var(--crimson-hi);
     border-color: var(--crimson);
   }
-
-  /* ================= КУРСОР-ЛАПКА ================= */
-
-/* Обычный курсор для всей страницы */
-body {
-  cursor: url('cursor.png') 4 4, auto;
-}
-
-/* Обычное состояние кнопки (на случай, если курсор не наследуется) */
-button {
-  cursor: url('cursor.png') 4 4, auto;
-}
-
-/* При наведении на кнопку */
-button:hover {
-  cursor: url('cursor2.png') 4 4, pointer;
-}
-
-/* При нажатии на кнопку — обязательно должно идти ПОСЛЕ :hover */
-button:active {
-  cursor: url('cursor3.png') 4 4, pointer;
-}
   
   /* ============ ПЛЕЕР ============ */
 
@@ -1101,6 +1079,89 @@ button:active {
       transition-delay: 0.01ms !important;
     }
   }
+
+/* ================= КУРСОР ================= */
+
+  html,
+  body {
+    cursor: url('cursor.png') 4 4, auto;
+  }
+
+  /* базовое состояние всего кликабельного */
+  a,
+  button,
+  summary,
+  input,
+  label,
+  [role="slider"],
+  .tab-btn,
+  .sub-btn,
+  .story-toggle,
+  .story-close,
+  .player-btn,
+  .player-progress-track,
+  .player-volume input[type="range"],
+  .to-top {
+    cursor: url('cursor.png') 4 4, auto;
+  }
+
+  /* наведение */
+  a:hover,
+  button:hover,
+  summary:hover,
+  input:hover,
+  label:hover,
+  [role="slider"]:hover,
+  .tab-btn:hover,
+  .sub-btn:hover,
+  .story-toggle:hover,
+  .story-close:hover,
+  .player-btn:hover,
+  .player-progress-track:hover,
+  .player-volume input[type="range"]:hover,
+  .to-top:hover {
+    cursor: url('cursor2.png') 4 4, pointer;
+  }
+
+  /* нажатие — обязательно ПОСЛЕ :hover */
+  a:active,
+  button:active,
+  summary:active,
+  input:active,
+  label:active,
+  [role="slider"]:active,
+  .tab-btn:active,
+  .sub-btn:active,
+  .story-toggle:active,
+  .story-close:active,
+  .player-btn:active,
+  .player-progress-track:active,
+  .player-volume input[type="range"]:active,
+  .to-top:active {
+    cursor: url('cursor3.png') 4 4, pointer;
+  }
+
+  /* бегунок громкости: у него собственный курсор в псевдоэлементах */
+  .player-volume input[type="range"]::-webkit-slider-thumb {
+    cursor: url('cursor2.png') 4 4, pointer;
+  }
+  .player-volume input[type="range"]:active::-webkit-slider-thumb {
+    cursor: url('cursor3.png') 4 4, pointer;
+  }
+  .player-volume input[type="range"]::-moz-range-thumb {
+    cursor: url('cursor2.png') 4 4, pointer;
+  }
+
+  /* заблокированные пункты — обычная лапка, без «кликабельного» вида */
+  .story-arc-locked .story-toggle,
+  .story-arc-locked .story-toggle:hover,
+  .story-arc-locked .story-toggle:active,
+  [aria-disabled="true"],
+  [aria-disabled="true"]:hover,
+  [aria-disabled="true"]:active {
+    cursor: url('cursor.png') 4 4, default;
+  }
+  
 </style>
 </head>
 <body>
