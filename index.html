@@ -1080,6 +1080,18 @@ button:active {
     .mini-player { max-width: calc(100vw - 90px); }
   }
 
+.lock-label.countdown {
+    font-style: normal;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.14em;
+    color: var(--crimson-hi);
+    opacity: 0.85;
+  }
+
+  .update-note {
+    margin-top: 46px;
+  }
+  
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after {
@@ -1194,10 +1206,10 @@ button:active {
         </div>
       </details>
 
-      <div class="story-arc story-arc-locked">
+     <div class="story-arc story-arc-locked">
         <div class="story-toggle" aria-disabled="true">
           <span>Глава I</span>
-          <span class="lock-label">скоро откроется</span>
+          <span class="lock-label countdown">скоро откроется</span>
         </div>
       </div>
     </div>
@@ -1528,6 +1540,16 @@ button:active {
       <h4 class="micro-title">Орден Животворящего Креста</h4>
       <p>Инквизиторы не пытаются отделять полукровок от вампиров. В их фанатичной картине мира полукровки — это буквальные отродья тьмы, камбионы, рожденные от греховной связи человека с демоном. Орден считает их живой скверной, порченым семенем, не заслуживающим ни милосердия, ни спасения. Если агенты Креста вычисляют полукровку, его ждет такой же жестокий и быстрый суд, как и чистокровного вампира: допрос с пристрастием, очищающий огонь и серебро.</p>
     </div>
+
+    <div class="story-arcs update-note">
+      <div class="story-arc story-arc-locked">
+        <div class="story-toggle" aria-disabled="true">
+          <span>Обновление 25 августа</span>
+          <span class="lock-label countdown">скоро</span>
+        </div>
+      </div>
+    </div>
+    
     <p class="end-mark">✦ ✦ ✦</p>
   </article>
 </section>
@@ -1898,6 +1920,46 @@ button:active {
     }, delay);
     onScrollFrame();
   });
+
+  /* ================= ОТСЧЁТ ДО ОБНОВЛЕНИЯ ================= */
+
+  /* месяцы в JS с нуля: 7 = август. Меняешь дату — меняешь только эту строку */
+  var COUNTDOWN_TARGET = new Date(2026, 7, 25, 0, 0, 0);
+
+  var countdownNodes = Array.prototype.slice.call(document.querySelectorAll('.countdown'));
+
+  function cdPad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function cdPlural(n, forms) {
+    var n10 = n % 10, n100 = n % 100;
+    if (n10 === 1 && n100 !== 11) return forms[0];
+    if (n10 >= 2 && n10 <= 4 && (n100 < 10 || n100 >= 20)) return forms[1];
+    return forms[2];
+  }
+
+  function cdTick() {
+    var diff = COUNTDOWN_TARGET - new Date();
+    var text;
+
+    if (diff <= 0) {
+      text = 'уже скоро';
+    } else {
+      var total = Math.floor(diff / 1000);
+      var d = Math.floor(total / 86400);
+      var h = Math.floor((total % 86400) / 3600);
+      var m = Math.floor((total % 3600) / 60);
+      var s = total % 60;
+      text = (d > 0 ? d + ' ' + cdPlural(d, ['день', 'дня', 'дней']) + ' · ' : '')
+           + cdPad(h) + ':' + cdPad(m) + ':' + cdPad(s);
+    }
+
+    countdownNodes.forEach(function (el) { el.textContent = text; });
+  }
+
+  if (countdownNodes.length) {
+    cdTick();
+    setInterval(cdTick, 1000);
+  }
 
   /* ================= AMBIENT-ПЛЕЕР ================= */
 
