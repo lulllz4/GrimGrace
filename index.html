@@ -1019,7 +1019,17 @@
   @media (max-width: 640px) {
     nav.main-nav { column-gap: 16px; }
     .tab-btn { padding: 14px 2px; font-size: 0.78rem; letter-spacing: 0.2em; }
-    .prose p { font-size: 1.08rem; }
+    .prose p { font-size: 1.16rem; line-height: 1.85; }
+    .prose ul.dash-list li { font-size: 1.16rem; line-height: 1.8; }
+    .prose ol.dogma-list li p { font-size: 1.15rem; line-height: 1.8; }
+    .prose ul.hierarchy li p { font-size: 1.15rem; line-height: 1.8; }
+    .note { font-size: 1.12rem; line-height: 1.8; }
+    .prose h4.micro-title { font-size: 1.14rem; }
+    .prose h3.section-title { font-size: 1.28rem; }
+    .toc { font-size: 1.02rem; }
+    .dogma-name { font-size: 1.1rem; }
+    nav.main-nav { padding: 0 12px; }
+    .tab-btn { font-size: 0.84rem; }
 
     .sub-nav {
       display: grid;
@@ -1192,6 +1202,53 @@
   [aria-disabled="true"]:active {
     cursor: url('cursor.png') 4 4, default;
   }
+
+  .site-search {
+    position: relative;
+    z-index: 6;
+    max-width: 420px;
+    margin: 26px auto 0;
+    padding: 0 24px;
+  }
+  .site-search input {
+    width: 100%;
+    background: rgba(17, 11, 14, 0.6);
+    border: 1px solid var(--hairline);
+    border-radius: 3px;
+    padding: 10px 14px;
+    color: var(--bone);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.02rem;
+  }
+  .site-search input::placeholder { color: var(--bone-dim); opacity: 0.7; }
+  .search-results {
+    margin-top: 6px;
+    border: 1px solid var(--hairline);
+    border-radius: 3px;
+    background: rgba(13, 9, 12, 0.97);
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  .search-results:empty { display: none; }
+  .search-results a {
+    display: block;
+    padding: 9px 14px;
+    color: var(--bone);
+    text-decoration: none;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(161, 27, 49, 0.10);
+  }
+  .search-results a:last-child { border-bottom: none; }
+  .search-results a:hover { color: var(--crimson-hi); background: rgba(161, 27, 49, 0.07); }
+  .search-results .where {
+    display: block;
+    font-family: 'Cormorant SC', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    color: var(--bone-dim);
+    margin-top: 2px;
+  }
   
 </style>
 </head>
@@ -1252,6 +1309,11 @@
   <button class="tab-btn" id="tab-extra" role="tab" aria-selected="false" aria-controls="extra" data-tab="extra" tabindex="-1"><span class="num">V</span>Приложения</button>
 </nav>
 
+<div class="site-search">
+  <input type="search" id="siteSearch" placeholder="Поиск по лору" aria-label="Поиск по сайту" autocomplete="off">
+  <div class="search-results" id="searchResults"></div>
+</div>
+  
 <main>
 
 <section class="tab-content active" id="plot" role="tabpanel" aria-labelledby="tab-plot">
@@ -1663,16 +1725,16 @@
     </svg>
 
     <div class="sub-nav" role="tablist" aria-label="Приложения">
-      <button class="sub-btn active" id="subtab-article1" role="tab" aria-selected="true" aria-controls="article1" data-sub="article1">1852</button>
+      <button class="sub-btn active" id="subtab-y1852" role="tab" aria-selected="true" aria-controls="y1852" data-sub="y1852">1852</button>
       <span class="sub-sep" aria-hidden="true">◆</span>
-      <button class="sub-btn" id="subtab-article2" role="tab" aria-selected="false" aria-controls="article2" data-sub="article2" tabindex="-1">Локации</button>
+      <button class="sub-btn" id="subtab-locations" role="tab" aria-selected="false" aria-controls="locations" data-sub="locations" tabindex="-1">Локации</button>
       <span class="sub-sep" aria-hidden="true">◆</span>
-      <button class="sub-btn" id="subtab-article3" role="tab" aria-selected="false" aria-controls="article3" data-sub="article3" tabindex="-1">Больше о вампирах</button>
+      <button class="sub-btn" id="subtab-vamp-extra" role="tab" aria-selected="false" aria-controls="vamp-extra" data-sub="vamp-extra" tabindex="-1">Больше о вампирах</button>
       <span class="sub-sep" aria-hidden="true">◆</span>
-      <button class="sub-btn" id="subtab-article4" role="tab" aria-selected="false" aria-controls="article4" data-sub="article4" tabindex="-1">Вне Англии</button>
+      <button class="sub-btn" id="subtab-world" role="tab" aria-selected="false" aria-controls="world" data-sub="world" tabindex="-1">Вне Англии</button>
     </div>
 
-    <div class="sub-content active" id="article1" role="tabpanel" aria-labelledby="subtab-article1">
+    <div class="sub-content active" id="y1852" role="tabpanel" aria-labelledby="subtab-y1852">
       <p class="sub-title">1852</p>
       <div class="prose">
         <h3 class="section-title">Особенности времени</h3>
@@ -1709,7 +1771,7 @@
       </div>
     </div>
 
-    <div class="sub-content" id="article2" role="tabpanel" aria-labelledby="subtab-article2">
+    <div class="sub-content" id="locations" role="tabpanel" aria-labelledby="subtab-locations">
       <p class="sub-title">Локации</p>
       <div class="prose">
         <div class="note">Это лишь список того, что может пригодиться вам по ходу ролевой. Игроки имеют право придумывать свои локации, если они подходят общей тематике и не нарушают установленный сеттинг.</div>
@@ -1759,7 +1821,7 @@
       </div>
     </div>
 
-    <div class="sub-content" id="article3" role="tabpanel" aria-labelledby="subtab-article3">
+    <div class="sub-content" id="vamp-extra" role="tabpanel" aria-labelledby="subtab-vamp-extra">
       <p class="sub-title">Больше о вампирах</p>
       <div class="banner-img">
         <img src="https://lulllz4.github.io/GrimGrace/bannerEXTRAVAMP1_GrimGrace.jpg" alt="" loading="lazy" decoding="async">
@@ -1794,7 +1856,7 @@
       </div>
     </div>
 
-    <div class="sub-content" id="article4" role="tabpanel" aria-labelledby="subtab-article4">
+    <div class="sub-content" id="world" role="tabpanel" aria-labelledby="subtab-world">
       <p class="sub-title">Вне Англии</p>
       <div class="banner-img">
         <img src="https://lulllz4.github.io/GrimGrace/bannerWORLD1_GrimGrace.jpg" alt="" loading="lazy" decoding="async">
@@ -1857,8 +1919,6 @@
   <p>Сайт принадлежит ролевой <a href="https://t.me/Grim_Grace" target="_blank" rel="noopener">@Grim_Grace</a></p>
 </footer>
 
-<audio id="playerAudio" preload="none" hidden></audio>
-
 <script>
 (function () {
   'use strict';
@@ -1914,6 +1974,35 @@
     }
   }
 
+  function activateByAnchor(id, opts) {
+    opts = opts || {};
+    if (!id) return false;
+    var el = document.getElementById(id);
+    if (!el) return false;
+
+    var panel = el.closest('.tab-content');
+    if (!panel) return false;
+
+    if (!panel.classList.contains('active')) {
+      activateTab(panel.id, { updateHash: false, scroll: false });
+    }
+
+    var sub = el.closest('.sub-content');
+    if (sub && !sub.classList.contains('active')) {
+      var subBtn = document.querySelector('.sub-btn[data-sub="' + sub.id + '"]');
+      if (subBtn) subBtn.click();
+    }
+
+    var det = el.closest('details');
+    if (det) det.open = true;
+
+    setTimeout(function () {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, opts.delay || 120);
+
+    return true;
+  }
+
   tabButtons.forEach(function (btn) {
     btn.addEventListener('click', function () {
       if (btn.classList.contains('active')) return;
@@ -1932,9 +2021,13 @@
     });
   });
 
-  window.addEventListener('hashchange', function () {
+window.addEventListener('hashchange', function () {
     var id = location.hash.slice(1);
-    if (TAB_IDS.indexOf(id) !== -1) activateTab(id, { updateHash: false });
+    if (TAB_IDS.indexOf(id) !== -1) {
+      activateTab(id, { updateHash: false });
+    } else {
+      activateByAnchor(id);
+    }
   });
 
   /* ================= АККОРДЕОНЫ ================= */
@@ -1967,6 +2060,7 @@
       btn.setAttribute('aria-selected', 'true');
       btn.tabIndex = 0;
       document.getElementById(btn.dataset.sub).classList.add('active');
+      history.replaceState(null, '', '#' + btn.dataset.sub);
     });
   });
 
@@ -2002,17 +2096,24 @@
 
   /* ================= ПЕРВОЕ ПОЯВЛЕНИЕ ================= */
 
-  window.addEventListener('load', function () {
+window.addEventListener('load', function () {
     var hashId = location.hash.slice(1);
     var hasHashTab = TAB_IDS.indexOf(hashId) !== -1;
+    var isAnchor = !hasHashTab && hashId && document.getElementById(hashId);
     var delay = 2600;
+
     if (hasHashTab && hashId !== 'plot') {
       activateTab(hashId, { updateHash: false, scroll: false });
       delay = 300;
+    } else if (isAnchor) {
+      activateByAnchor(hashId, { delay: 500 });
+      delay = 300;
     }
+
     setTimeout(function () {
       revealChapter(document.querySelector('.tab-content.active'));
     }, delay);
+
     onScrollFrame();
   });
 
@@ -2199,6 +2300,51 @@
 
   loadTrack(0, false);
   updateMuteBtn();
+
+  var searchInput   = document.getElementById('siteSearch');
+  var searchResults = document.getElementById('searchResults');
+
+  if (searchInput && searchResults) {
+    var INDEX = [], autoId = 0;
+
+    document.querySelectorAll('h3.section-title, h4.micro-title, .sub-title, .dogma-name, .tier-name')
+      .forEach(function (el) {
+        if (!el.id) el.id = 'idx-' + (++autoId);
+        var panel = el.closest('.tab-content');
+        var head  = panel ? panel.querySelector('h2') : null;
+        INDEX.push({
+          id: el.id,
+          text: el.textContent.replace(/\s+/g, ' ').trim(),
+          tab: head ? head.textContent.trim() : ''
+        });
+      });
+
+    searchInput.addEventListener('input', function () {
+      var q = searchInput.value.trim().toLowerCase();
+      searchResults.innerHTML = '';
+      if (q.length < 2) return;
+
+      INDEX.filter(function (it) { return it.text.toLowerCase().indexOf(q) !== -1; })
+           .slice(0, 12)
+           .forEach(function (it) {
+             var a = document.createElement('a');
+             a.href = '#' + it.id;
+             a.innerHTML = '';
+             a.appendChild(document.createTextNode(it.text));
+             var w = document.createElement('span');
+             w.className = 'where';
+             w.textContent = it.tab;
+             a.appendChild(w);
+             a.addEventListener('click', function (e) {
+               e.preventDefault();
+               activateByAnchor(it.id, { delay: 150 });
+               searchInput.value = '';
+               searchResults.innerHTML = '';
+             });
+             searchResults.appendChild(a);
+           });
+    });
+  }
 
 })();
 </script>
