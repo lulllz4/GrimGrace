@@ -1246,6 +1246,171 @@
     color: var(--bone-dim);
     margin-top: 2px;
   }
+
+   /* ================= ЗОЛОТО · КАРНАВАЛЬНАЯ МАСКА ================= */
+
+  :root {
+    --gold:      #9a7b2a;
+    --gold-hi:   #d8b45c;
+    --gold-lo:   #4a3a12;
+    --gold-hair: rgba(216, 180, 92, 0.22);
+  }
+
+  .masquerade {
+    position: relative;
+    margin: 56px 0 0;
+    padding: clamp(30px, 5vw, 48px) clamp(16px, 4vw, 38px) clamp(24px, 4vw, 36px);
+    border: 1px solid var(--gold-hair);
+    border-radius: 5px;
+    background:
+      radial-gradient(ellipse 85% 60% at 50% 0%, rgba(216, 180, 92, 0.075), transparent 72%),
+      rgba(24, 18, 9, 0.35);
+  }
+  .masquerade::before,
+  .masquerade::after {
+    content: '';
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--gold-hair);
+    pointer-events: none;
+  }
+  .masquerade::before { top: 8px;    left: 8px;  border-right: 0; border-bottom: 0; }
+  .masquerade::after  { bottom: 8px; right: 8px; border-left: 0;  border-top: 0; }
+
+  /* --- сама маска --- */
+
+  .mask-ornament {
+    display: block;
+    width: min(230px, 56vw);
+    margin: 0 auto 4px;
+    overflow: visible;
+    filter: drop-shadow(0 0 7px rgba(216, 180, 92, 0.18));
+  }
+  .mask-ornament .mask-line {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+  .mask-ornament .mask-eye {
+    fill: var(--ink);
+    stroke: var(--gold-hi);
+    stroke-width: 1.4;
+  }
+  .mask-ornament .mask-gem { fill: var(--gold-hi); stroke: none; }
+
+  .js .masquerade .mask-line {
+    stroke-dasharray: 420;
+    stroke-dashoffset: 420;
+  }
+  .js .masquerade .mask-eye,
+  .js .masquerade .mask-gem { opacity: 0; }
+  .js .chapter.revealed .masquerade .mask-line {
+    animation: drawStroke 2.6s 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  .js .chapter.revealed .masquerade .mask-eye,
+  .js .chapter.revealed .masquerade .mask-gem {
+    animation: gemAppear 1.3s 2.1s ease forwards;
+  }
+
+  .masquerade.tight { margin-top: 20px; }
+  /* --- заголовки золотого блока --- */
+
+  .masq-label {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    letter-spacing: 0.3em;
+    text-indent: 0.3em;
+    color: var(--gold);
+  }
+  .masquerade h3.masq-title {
+    display: block;
+    text-align: center;
+    font-family: 'Cormorant SC', serif;
+    font-weight: 500;
+    font-size: clamp(1.6rem, 4.4vw, 2.2rem);
+    letter-spacing: 0.2em;
+    text-indent: 0.2em;
+    color: var(--gold-hi);
+    margin: 12px 0 0;
+    scroll-margin-top: 24px;
+  }
+  .masquerade h3.masq-title::before,
+  .masquerade h3.masq-title::after { display: none; }
+
+  .masq-rule {
+    width: min(260px, 60%);
+    height: 1px;
+    margin: 20px auto 34px;
+    background: linear-gradient(to right, transparent, var(--gold-hair), transparent);
+  }
+
+  /* --- перекраска содержимого в золото --- */
+
+  .masquerade .prose h3.section-title { color: var(--gold-hi); }
+  .masquerade .prose h3.section-title::before { color: var(--gold); }
+  .masquerade .prose h3.section-title::after {
+    background: linear-gradient(to right, var(--gold-hair), transparent);
+  }
+  .masquerade .prose h4.micro-title { color: var(--gold); }
+  .masquerade .prose h4.micro-title::before,
+  .masquerade .prose h4.micro-title::after { color: var(--gold-lo); }
+  .masquerade .prose p.lead::first-letter { color: var(--gold-hi); }
+  .masquerade .prose ul.dash-list li::before { color: var(--gold); }
+  .masquerade .note { border-left-color: var(--gold-lo); }
+  .masquerade .end-mark { color: var(--gold); }
+
+  .masquerade .prose ul.hierarchy .tier-name { color: var(--gold-hi); }
+  .masquerade .prose ul.hierarchy .tier-1 .tier-name::before { color: var(--gold-hi); }
+  .masquerade .prose ul.hierarchy .tier-2 .tier-name::before { color: var(--gold); }
+  .masquerade .prose ul.hierarchy .tier-3 .tier-name::before,
+  .masquerade .prose ul.hierarchy .tier-4 .tier-name::before { color: var(--gold-lo); }
+  .masquerade .prose ul.hierarchy .tier-name em {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.82em;
+    letter-spacing: 0.04em;
+    color: var(--gold);
+    opacity: 0.9;
+  }
+
+  .masquerade .banner-img {
+    border-color: var(--gold-hair);
+  }
+  .masquerade .banner-img img {
+    filter: grayscale(45%) sepia(38%) contrast(1.06) brightness(0.78);
+  }
+
+  /* --- мелочи для Главы I --- */
+
+  .prose p.accent {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.28rem;
+    color: var(--crimson-hi);
+    letter-spacing: 0.04em;
+    margin: 34px 0;
+  }
+  .scene-break {
+    text-align: center;
+    color: var(--crimson-lo);
+    font-size: 0.9rem;
+    letter-spacing: 0.5em;
+    text-indent: 0.5em;
+    margin: 34px 0;
+    user-select: none;
+  }
+
+  @media (max-width: 640px) {
+    .masquerade { margin-top: 44px; }
+    .prose p.accent { font-size: 1.2rem; }
+  }
+
   
 </style>
 </head>
@@ -1357,17 +1522,72 @@
         </div>
       </details>
 
-<div class="story-arc story-arc-locked">
-        <div class="locked-teaser">
-          <img src="https://lulllz4.github.io/GrimGrace/bannerCHAPTER1_GrimGrace.jpg" alt="" loading="lazy" decoding="async">
-          <span class="locked-teaser-veil"></span>
-        </div>
-        <div class="story-toggle" aria-disabled="true">
+      <details class="story-arc" id="arc-chapter1">
+        <summary class="story-toggle">
           <span>Глава I</span>
-          <span class="lock-label countdown">скоро откроется</span>
+          <span class="story-toggle-arrow" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="story-body-inner">
+          <div class="prose">
+            <div class="banner-img">
+              <img src="https://lulllz4.github.io/GrimGrace/bannerCHAPTER1_GrimGrace.jpg" alt="" loading="lazy" decoding="async">
+            </div>
+
+            <p class="lead">Королева мертва уже три недели, но Лондон так и не научился дышать ровно. Отчаяние стало частью воздуха, как копоть и речная гниль; к нему привыкли настолько, что перестали замечать — и оттого пропустили миг, когда погребальный звон колоколов сменился на тревожный. Под фасадом всеобщего траура «Альбион» ведёт свою войну, и война эта беззвучна.</p>
+
+            <p>Магистры не спят. С той ночи, когда из королевского кабинета исчезла «Чёрная книга Тауэра», Капитул живёт на осадном положении. Приказ прост и страшен: вернуть книгу. За две недели в трущобах Ист-Энда стало на дюжину трупов больше — обескровленных, брошенных в доках свидетелей, чьё единственное преступление в том, что они однажды оказались не в том переулке. Неофиты рыщут по городу, срывая с петель стальные замки голыми руками. Магистры через смертных марионеток выворачивают наизнанку Парламент, редакции газет, ломбарды и архивы. Всех, кто мог держать книгу. Всех, кроме тех, кто держит её на самом деле.</p>
+
+            <p>Скотленд-Ярд слеп, как и прежде. Вырванные с корнем замки сыщики упрямо списывают на гидравлические домкраты налётчиков, а обескровленные тела — на очередного прибрежного маньяка. Они прочёсывают дно, ищут банду, ищут почерк — и не находят, потому что ищут человека. Орден под собором точит серебро и ждёт своего знамения. Уайтхолл считает деньги и чертит на бумаге контуры невидимого «картеля». Каждый из игроков смотрит вверх — на лордов, на епископов, на трон. Ни один не смотрит вниз.</p>
+<div class="banner-img">
+        <img src="https://lulllz4.github.io/GrimGrace/bannerCHAPTER1_1_GrimGrace.jpg" alt="" loading="lazy" decoding="async">
+      </div>
+            <p class="accent">А смотреть надо именно туда.</p>
+
+            <p>Гордыня велит вампиру не видеть в человеке равного — а в полукровке велит не видеть вовсе ничего. Бастард при клубе — это мебель, тень за креслом, рука, что подаёт бокал и уносит остывшее тело. Его не считают опасным, потому что не видят. И именно поэтому немыслимое уже свершилось.</p>
+
+            <p>«Чёрную книгу Тауэра» вынес не радикал, не шпион и не фанатик Ордена. Её забрали те, кого веками держали в подвалах на объедках чужой крови. Реестр, способный сорвать маску со всего вида, лежит теперь ниже канализации, ниже даже презрения — в руках горстки полукровок.</p>
+
+            <p>Об этом не знает никто. Не знает «Альбион», перепахивающий Лондон сверху донизу. Не знают люди. И — что важнее всего — не знают сами полукровки города: для бастарда в борделе, в сточной норе, в гнилом доходном доме Ист-Энда смерть королевы такая же далёкая беда, как для всякого нищего. Тайну держит одна-единственная организация — «Дети Асфодели». И даже внутри этой горстки правду знают не все.</p>
+          </div>
+
+          <div class="masquerade">
+            <svg class="mask-ornament" viewBox="0 0 200 110" aria-hidden="true" focusable="false">
+              <path class="mask-line" d="M100,28 C122,13 156,15 174,31 C190,45 186,65 168,75 C148,86 122,81 108,67 C103,62 100,55 100,49"/>
+              <path class="mask-line" d="M100,28 C78,13 44,15 26,31 C10,45 14,65 32,75 C52,86 78,81 92,67 C97,62 100,55 100,49"/>
+              <ellipse class="mask-eye" cx="62" cy="44" rx="16" ry="9" transform="rotate(-10 62 44)"/>
+              <ellipse class="mask-eye" cx="138" cy="44" rx="16" ry="9" transform="rotate(10 138 44)"/>
+              <path class="mask-line" d="M100,28 C100,17 93,9 84,7 C93,4 100,11 100,17"/>
+              <path class="mask-line" d="M100,28 C100,17 107,9 116,7 C107,4 100,11 100,17"/>
+              <path class="mask-line" d="M18,54 C7,56 5,65 12,69"/>
+              <path class="mask-line" d="M182,54 C193,56 195,65 188,69"/>
+              <rect class="mask-gem" x="96" y="20" width="8" height="8" transform="rotate(45 100 24)"/>
+            </svg>
+
+            <p class="masq-label">Тот, кто ведёт их</p>
+            <div class="masq-rule"></div>
+
+            <div class="prose">
+              <p>Есть тот, кто ведёт их. Тайный предводитель, какого не видели даже самые близкие последователи. Никто из его людей не видел замысла целиком. Одни вынесли книгу — и не знают, где она теперь. Другие стерегут её — и не знают, зачем. Третьи носят по городу записки, смысла которых им не открывают. Он раздаёт своим ровно столько правды, сколько нужно для одного шага, — и ни каплей больше. Даже пойди они все под нож магистров, выдать было бы нечего: нельзя предать план, которого не знаешь.</p>
+
+      <div class="banner-img">
+        <img src="https://lulllz4.github.io/GrimGrace/bannerCHAPTER1_5_GrimGrace.jpg" alt="" loading="lazy" decoding="async">
+      </div>
+              
+              <p>Чего он хочет — держать ли книгу как нож у горла Капитула, спалить ли ею весь вид дотла, стравить ли богов с фанатиками и выйти после на пепелище — не знает ни одна живая душа, кроме него самого. Ясно лишь одно: он терпелив. Он ждёт. И будет ждать, пока не наступит нужный момент.</p>
+            </div>
+          </div>
+
+          <button class="story-close" data-target="arc-chapter1">Свернуть ✦ Глава I</button>
+        </div>
+      </details>
+
+            <div class="story-arc story-arc-locked" id="arc-chapter2" aria-disabled="true">
+        <div class="story-toggle">
+          <span>Глава II</span>
+          <span class="lock-label">Скоро откроется...</span>
         </div>
       </div>
-
+      
     <p class="end-mark">✦ ✦ ✦</p>
   </article>
 </section>
@@ -1650,6 +1870,8 @@
       <a href="#hb-who">Кто такие полукровки?</a><span class="toc-sep" aria-hidden="true">·</span>
       <a href="#hb-body">О телах</a><span class="toc-sep" aria-hidden="true">·</span>
       <a href="#hb-society">Общество и полукровки</a>
+      <span class="toc-sep" aria-hidden="true">·</span>
+      <a href="#hb-asphodel">«Дети Асфодели»</a>
     </nav>
 
     <div class="prose">
@@ -1695,12 +1917,60 @@
       <p>Инквизиторы не пытаются отделять полукровок от вампиров. В их фанатичной картине мира полукровки — это буквальные отродья тьмы, камбионы, рожденные от греховной связи человека с демоном. Орден считает их живой скверной, порченым семенем, не заслуживающим ни милосердия, ни спасения. Если агенты Креста вычисляют полукровку, его ждет такой же жестокий и быстрый суд, как и чистокровного вампира: допрос с пристрастием, очищающий огонь и серебро.</p>
     </div>
 
-    <div class="story-arcs update-note">
-      <div class="story-arc story-arc-locked">
-        <div class="story-toggle" aria-disabled="true">
-          <span>Обновление 25 августа</span>
-          <span class="lock-label countdown">скоро</span>
-        </div>
+ <div class="prose">
+      <h3 class="section-title" id="hb-asphodel">«Дети Асфодели»</h3>
+    </div>
+      <div class="banner-img">
+        <img src="https://lulllz4.github.io/GrimGrace/bannerCHAPTER1_4_GrimGrace.jpg" alt="" loading="lazy" decoding="async">
+      </div>
+    <div class="masquerade tight">
+      <svg class="mask-ornament" viewBox="0 0 200 110" aria-hidden="true" focusable="false">
+        <path class="mask-line" d="M100,28 C122,13 156,15 174,31 C190,45 186,65 168,75 C148,86 122,81 108,67 C103,62 100,55 100,49"/>
+        <path class="mask-line" d="M100,28 C78,13 44,15 26,31 C10,45 14,65 32,75 C52,86 78,81 92,67 C97,62 100,55 100,49"/>
+        <ellipse class="mask-eye" cx="62" cy="44" rx="16" ry="9" transform="rotate(-10 62 44)"/>
+        <ellipse class="mask-eye" cx="138" cy="44" rx="16" ry="9" transform="rotate(10 138 44)"/>
+        <path class="mask-line" d="M100,28 C100,17 93,9 84,7 C93,4 100,11 100,17"/>
+        <path class="mask-line" d="M100,28 C100,17 107,9 116,7 C107,4 100,11 100,17"/>
+        <path class="mask-line" d="M18,54 C7,56 5,65 12,69"/>
+        <path class="mask-line" d="M182,54 C193,56 195,65 188,69"/>
+        <rect class="mask-gem" x="96" y="20" width="8" height="8" transform="rotate(45 100 24)"/>
+      </svg>
+
+<p class="masq-label">Скрытая организация</p>
+      <h3 class="masq-title">«Дети Асфодели»</h3>
+      <div class="masq-rule"></div>
+
+      <div class="prose">
+        <p class="lead">Имя «Дети Асфодели» пошло от борделя «Асфодели» в Ковент-Гардене — колыбели большинства лондонских бастардов. Но у него есть и второе дно: Асфодели — цветок царства мёртвых, а асфоделевые луга в старых поверьях — серое, забытое место, куда после смерти бредут не грешники и не праведники, а все прочие, никакие. Именно там, между раем и адом, между богами и скотом, и застряли полукровки.</p>
+
+        <p>У «Альбиона» власть держится на прожитых веках и чистоте крови. У Ордена — на вере и железной муштре. У «Детей Асфодели» нет ни того, ни другого: они слабы, малочисленны и нищи, и знают это лучше всех. Их единственное оружие — незаметность. Оттого и устроены они не как пирамида власти, а как система глухих перегородок. Здесь чин измеряется не силой и не знатностью, а одним: сколько правды тебе позволено держать в руках. Большинство не знает даже, сколько над ними ступеней и есть ли они вообще. Всё поле целиком видит только один.</p>
+
+        <h3 class="section-title" id="hb-asph-partition">Принцип «перегородки»</h3>
+        <p>Ни одна рука здесь не знает, что делает другая. Тот, кто вынес книгу, не знает, где она теперь. Тот, кто её стережёт, не знает, зачем. Тот, кто носит записки, не знает, что в них. Это не жестокость и не игра — это защита. Попади любой из «Детей» в руки магистров или Ордена, под пыткой он выдаст лишь свой обрывок: имя одного связного да пару дверей. План, которого он не знает, предать невозможно. Оттого недоверие здесь не порок, а устав. Свои не знают своих. Каждый видит лишь того, кто стоит прямо над ним, — и никого выше.</p>
+
+        <h3 class="section-title" id="hb-asph-structure">Устройство</h3>
+        <ul class="hierarchy">
+          <li class="tier-1">
+            <span class="tier-name">Садовник <em>· Вожак</em></span>
+            <p>Один. Тот, кто видит всё поле разом и решает, чему расти, а что срезать. Ни имени, ни лица не знает почти никто из «Детей»: он говорит через посредников, отдаёт волю обрывками, и даже ближайшие держат в руках лишь по нитке от общего узла.</p>
+          </li>
+          <li class="tier-2">
+            <span class="tier-name">Привратники <em>· Ближний круг</em></span>
+            <p>Горстка тех, кто сознательно служит замыслу, — единственные, кто знает, что за их спиной стоит нечто большее, чем нора взаимопомощи. Каждый ведёт свою глухую ячейку и служит воротами: наверх, к Садовнику, ничего не проходит мимо них, а вниз, в поле, не просачивается ни слова лишнего. Но и они держат лишь свой кусок правды — и не знают ни числа других Привратников, ни того, что поручено соседней ячейке.</p>
+          </li>
+          <li class="tier-3">
+            <span class="tier-name">Жнецы <em>· Руки</em></span>
+            <p>Те, кем делается острая работа: кража, стража над спрятанным, тихая расправа, переноска того, что нельзя доверить чужим. Они знают, что служат кому-то, делают, что велено, и не спрашивают лишнего — за лишний вопрос из «Детей» уходят навсегда. Почти все они — полукровки, обожжённые серебром и жизнью, которым попросту больше некуда идти.</p>
+          </li>
+          <li class="tier-4">
+            <span class="tier-name">Поле <em>· Асфодели</em></span>
+            <p>Не столько ступень, сколько почва, из которой растёт всё остальное. Это бесчисленные бастарды Лондона, которые и не подозревают, что их держат за своих: нищий, что за монету скажет, чья карета стояла у клуба; девка из «Асфодели», что запомнит нужное имя; мальчишка, что «забудет» запереть дверь. Они думают, будто просто оказали услугу или взяли грош, — и никогда не узнают, чью волю исполнили. Садовник возделывает это поле, не спрашивая согласия. Отсюда же он берёт и новых: приметив того, кто не сболтнул, не струсил и не задал вопроса, его тихо срывают и поднимают выше — во Жнецы. Так из безымянной серой массы рождается тот, кому однажды доверят нитку.</p>
+          </li>
+        </ul>
+
+        <h3 class="section-title" id="hb-asph-life">Существование</h3>
+        <p>Организацию не держат ни деньги, ни клятвы, ни вера — держать нечем. Её держит одно: впервые за свои жалкие жизни «Дети» попали туда, где их считают. Не за скот, не за мебель — за своих. Для существа, выросшего в подвале на объедках чужой крови, это крепче любой присяги.</p>
+        <p>У такой постройки есть очевидная трещина: срежь Садовника — и поле расползётся, ведь узел держит он один. Но добраться до него нельзя: невозможно убить того, чьего имени, лица и места не знает даже собственный ближний круг.</p>
       </div>
     </div>
     
@@ -1790,7 +2060,7 @@
           <li>Капитул (подземелья): скрытая система залов, уходящая глубоко под землю. Звуконепроницаемые помещения из холодного мрамора, где нет газовых рожков — только свечи.</li>
         </ul>
 
-        <h3 class="section-title">Элитный бордель «Асфодель»</h3>
+        <h3 class="section-title">Элитный бордель «Асфодели»</h3>
         <div class="banner-img">
           <img src="https://lulllz4.github.io/GrimGrace/bannerLOCATIONS3_GrimGrace.jpg" alt="" loading="lazy" decoding="async">
         </div>
