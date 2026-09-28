@@ -15,7 +15,15 @@
 <link rel="icon" type="image/png" href="https://lulllz4.github.io/GrimGrace/favicon-16x16.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<script>document.documentElement.classList.add('js');</script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cormorant+SC:wght@400;500&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#070508">
+<script>
+document.documentElement.classList.add('js');
+try {
+  if (sessionStorage.getItem('gg-intro')) document.documentElement.classList.add('no-intro');
+  sessionStorage.setItem('gg-intro', '1');
+} catch (e) {}
+</script>
 <style>
   @font-face {
     font-family: 'newcyrillicgoth';
@@ -147,8 +155,8 @@
   }
 
   @keyframes titleSettle {
-    0%   { opacity: 0; letter-spacing: 0.65em; text-indent: 0.65em; filter: blur(8px); }
-    100% { opacity: 1; letter-spacing: 0.28em; text-indent: 0.28em; filter: blur(0); }
+    0%   { opacity: 0; filter: blur(8px); transform: scale(1.04); }
+    100% { opacity: 1; filter: blur(0);   transform: none; }
   }
   @keyframes fadeDown {
     0%   { opacity: 0; transform: translateY(-14px); }
@@ -1067,17 +1075,6 @@
     .mini-player { max-width: calc(100vw - 90px); }
   }
 
-.lock-label.countdown {
-    font-style: normal;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0.14em;
-    color: var(--crimson-hi);
-    opacity: 0.85;
-  }
-
-  .update-note {
-    margin-top: 46px;
-  }
   
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -1121,7 +1118,9 @@
   }
   
 /* ================= КУРСОР ================= */
-
+  
+  @media (hover: hover) and (pointer: fine) {
+  
   html,
   body {
     cursor: url('cursor.png') 4 4, auto;
@@ -1200,6 +1199,7 @@
   [aria-disabled="true"]:hover,
   [aria-disabled="true"]:active {
     cursor: url('cursor.png') 4 4, default;
+  }
   }
 
   .site-search {
@@ -1411,6 +1411,122 @@
   @media (max-width: 640px) {
     .masquerade { margin-top: 44px; }
     .prose p.accent { font-size: 1.2rem; }
+  }
+
+    /* ================= ПРАВКИ ================= */
+
+  /* контраст */
+  :root {
+    --bone-dim: #948980;
+    --crimson-text: #c23a50;
+  }
+  .prose h3.section-title,
+  .prose p.accent,
+  .chapter-label,
+  .sub-title,
+  .tab-btn.active .num { color: var(--crimson-text); }
+  .tab-btn .num { color: #8f2a3b; }
+
+  /* поиск появляется вместе с навигацией */
+  .site-search {
+    opacity: 0;
+    animation: fadeUp 1.6s 2.4s ease forwards;
+  }
+
+  /* повторный заход — без долгого вступления */
+  .no-intro .epigraph,
+  .no-intro h1,
+  .no-intro .script-line,
+  .no-intro .header-player,
+  .no-intro nav.main-nav,
+  .no-intro .site-search,
+  .no-intro header .flourish .draw,
+  .no-intro header .flourish .gem {
+    animation-delay: 0s !important;
+    animation-duration: .6s !important;
+  }
+
+  /* глава после появления не держит лишний слой */
+  .js .chapter.revealed { filter: none; }
+
+  /* плавное проявление картинок */
+  .js .banner-img img { opacity: 0; transition: opacity 1.2s ease; }
+  .js .banner-img img.loaded { opacity: 1; }
+
+  /* зона нажатия у полосы трека */
+  .player-progress-track::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    top: -12px; bottom: -12px;
+  }
+  @media (pointer: coarse) {
+    .player-btn { min-width: 40px; min-height: 40px; }
+  }
+
+  /* подвал не прячется под плавающими кнопками */
+  footer { padding-bottom: 110px; }
+
+  /* ---------- телефон ---------- */
+  @media (max-width: 640px) {
+    main { padding-left: 8px; padding-right: 8px; }
+    .chapter {
+      padding: 26px 14px;
+      border-left: 0; border-right: 0; border-radius: 0;
+    }
+    .js .chapter { filter: none; }
+    .masquerade { padding: 26px 12px 20px; }
+
+    .banner-img { height: auto; aspect-ratio: 5 / 2; }
+
+    .prose p, .prose li { hyphens: auto; }
+
+    /* ступени иерархии компактнее */
+    .prose ul.hierarchy .tier-1,
+    .prose ul.hierarchy .tier-outcast { padding-left: 18px; }
+    .prose ul.hierarchy .tier-2 { padding-left: 26px; }
+    .prose ul.hierarchy .tier-3 { padding-left: 34px; }
+    .prose ul.hierarchy .tier-4 { padding-left: 42px; }
+    .prose ul.hierarchy .tier-1 .tier-name::before,
+    .prose ul.hierarchy .tier-outcast .tier-name::before { left: 0; }
+    .prose ul.hierarchy .tier-2 .tier-name::before { left: 8px; }
+    .prose ul.hierarchy .tier-3 .tier-name::before { left: 18px; }
+    .prose ul.hierarchy .tier-4 .tier-name::before { left: 26px; }
+
+    /* липкая навигация в одну строку */
+    nav.main-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      overflow-x: auto;
+      background: rgba(7, 5, 8, 0.94);
+      scrollbar-width: none;
+    }
+    nav.main-nav::-webkit-scrollbar { display: none; }
+    .tab-btn { flex: 0 0 auto; padding: 12px 6px; }
+    .tab-btn .num { display: none; }
+
+    /* якоря не уезжают под навигацию */
+    .prose h3.section-title,
+    .masquerade h3.masq-title,
+    .story-toggle { scroll-margin-top: 70px; }
+
+    /* виньетка мягче, чтобы не темнила текст */
+    body::after {
+      background: radial-gradient(ellipse 120% 90% at 50% 45%, transparent 55%, rgba(2,1,2,0.6) 100%);
+    }
+  }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 2rem; letter-spacing: .14em; text-indent: .14em; }
+    .epigraph {
+      font-size: .68rem;
+      letter-spacing: .22em;
+      text-indent: .22em;
+      line-height: 1.9;
+    }
   }
 
   
@@ -2239,7 +2355,12 @@
       history.replaceState(null, '', '#' + id);
     }
     if (opts.scroll !== false) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      var navEl  = document.querySelector('.main-nav');
+      var mainEl = document.querySelector('main');
+      var target = mainEl.offsetTop - navEl.offsetHeight - 10;
+      if (window.scrollY > target) {
+        window.scrollTo({ top: target, behavior: 'smooth' });
+      }
     }
   }
 
@@ -2340,6 +2461,7 @@ window.addEventListener('hashchange', function () {
   var miniPlayer   = document.getElementById('miniPlayer');
   var headerEl     = document.querySelector('header');
   var scrollTicking = false;
+    var hasPlayed = false;
 
   function onScrollFrame() {
     scrollTicking = false;
@@ -2349,7 +2471,7 @@ window.addEventListener('hashchange', function () {
 
     var past = window.scrollY > headerEl.offsetHeight;
     toTopBtn.classList.toggle('visible', past);
-    miniPlayer.classList.toggle('visible', past);
+    miniPlayer.classList.toggle('visible', past && hasPlayed);
   }
 
   window.addEventListener('scroll', function () {
@@ -2369,7 +2491,7 @@ window.addEventListener('load', function () {
     var hashId = location.hash.slice(1);
     var hasHashTab = TAB_IDS.indexOf(hashId) !== -1;
     var isAnchor = !hasHashTab && hashId && document.getElementById(hashId);
-    var delay = 2600;
+    var delay = document.documentElement.classList.contains('no-intro') ? 300 : 2600;
 
     if (hasHashTab && hashId !== 'plot') {
       activateTab(hashId, { updateHash: false, scroll: false });
@@ -2385,46 +2507,6 @@ window.addEventListener('load', function () {
 
     onScrollFrame();
   });
-
-  /* ================= ОТСЧЁТ ДО ОБНОВЛЕНИЯ ================= */
-
-  /* месяцы в JS с нуля: 7 = август. Меняешь дату — меняешь только эту строку */
-  var COUNTDOWN_TARGET = new Date('2026-08-25T00:00:00+03:00');
-
-  var countdownNodes = Array.prototype.slice.call(document.querySelectorAll('.countdown'));
-
-  function cdPad(n) { return n < 10 ? '0' + n : '' + n; }
-
-  function cdPlural(n, forms) {
-    var n10 = n % 10, n100 = n % 100;
-    if (n10 === 1 && n100 !== 11) return forms[0];
-    if (n10 >= 2 && n10 <= 4 && (n100 < 10 || n100 >= 20)) return forms[1];
-    return forms[2];
-  }
-
-  function cdTick() {
-    var diff = COUNTDOWN_TARGET - new Date();
-    var text;
-
-    if (diff <= 0) {
-      text = 'уже скоро';
-    } else {
-      var total = Math.floor(diff / 1000);
-      var d = Math.floor(total / 86400);
-      var h = Math.floor((total % 86400) / 3600);
-      var m = Math.floor((total % 3600) / 60);
-      var s = total % 60;
-      text = (d > 0 ? d + ' ' + cdPlural(d, ['день', 'дня', 'дней']) + ' · ' : '')
-           + cdPad(h) + ':' + cdPad(m) + ':' + cdPad(s);
-    }
-
-    countdownNodes.forEach(function (el) { el.textContent = text; });
-  }
-
-  if (countdownNodes.length) {
-    cdTick();
-    setInterval(cdTick, 1000);
-  }
 
   /* ================= AMBIENT-ПЛЕЕР ================= */
 
@@ -2463,6 +2545,10 @@ window.addEventListener('load', function () {
 
   audio.volume = parseFloat(volumeSlider.value);
 
+    var volProbe = document.createElement('audio');
+  volProbe.volume = 0.5;
+  if (volProbe.volume === 1) volumeSlider.style.display = 'none';
+
   function safePlay() {
     var p = audio.play();
     if (p && typeof p.catch === 'function') {
@@ -2471,24 +2557,23 @@ window.addEventListener('load', function () {
   }
 
   function updateMuteBtn() {
-    var muted = audio.volume === 0;
+    var muted = audio.muted;
     muteBtn.textContent = muted ? '✕' : '♪';
     muteBtn.setAttribute('aria-pressed', muted ? 'true' : 'false');
     muteBtn.setAttribute('aria-label', muted ? 'Включить звук' : 'Выключить звук');
   }
 
   volumeSlider.addEventListener('input', function () {
-    audio.volume = parseFloat(volumeSlider.value);
-    audio.muted = false;
+    var v = parseFloat(volumeSlider.value);
+    audio.volume = v;
+    if (v > 0) lastVolume = v;
+    audio.muted = v === 0;
     updateMuteBtn();
   });
 
   muteBtn.addEventListener('click', function () {
-    if (audio.volume > 0) {
-      lastVolume = audio.volume;
-      audio.volume = 0;
-      volumeSlider.value = 0;
-    } else {
+    audio.muted = !audio.muted;
+    if (!audio.muted && audio.volume === 0) {
       audio.volume = lastVolume;
       volumeSlider.value = lastVolume;
     }
@@ -2538,6 +2623,10 @@ window.addEventListener('load', function () {
   miniNext.addEventListener('click', function () { loadTrack(current + 1, true); });
 
   audio.addEventListener('play',  updatePlayIcon);
+    audio.addEventListener('play', function () {
+    hasPlayed = true;
+    onScrollFrame();
+  });
   audio.addEventListener('pause', updatePlayIcon);
   audio.addEventListener('ended', function () { loadTrack(current + 1, true); });
 
@@ -2569,6 +2658,14 @@ window.addEventListener('load', function () {
 
   loadTrack(0, false);
   updateMuteBtn();
+
+    document.querySelectorAll('.banner-img img').forEach(function (img) {
+    if (img.complete) img.classList.add('loaded');
+    else {
+      img.addEventListener('load',  function () { img.classList.add('loaded'); });
+      img.addEventListener('error', function () { img.classList.add('loaded'); });
+    }
+  });
 
   var searchInput   = document.getElementById('siteSearch');
   var searchResults = document.getElementById('searchResults');
@@ -2612,6 +2709,17 @@ window.addEventListener('load', function () {
              });
              searchResults.appendChild(a);
            });
+    });
+
+        searchInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        searchInput.value = '';
+        searchResults.innerHTML = '';
+        searchInput.blur();
+      }
+    });
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.site-search')) searchResults.innerHTML = '';
     });
   }
 
