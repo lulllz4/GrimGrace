@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -7,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
 <title>GrimGrace</title>
-<meta name="description" content="Grim Grace — текстовая ролевая о вампирах в викторианском Лондоне. 1852 год. What's hidden behind the masks...">
+<meta name="description" content="Grim Grace — текстовая ролевая Genshin Impact о вампирах в Лондоне. 1852 год. What's hidden behind the masks...">
 <meta property="og:title" content="GrimGrace">
-<meta property="og:description" content="Текстовая ролевая о вампирах в викторианском Лондоне. 1852 год.">
+<meta property="og:description" content="Текстовая ролевая о вампирах по GENSHIN IMPACT. 1852 год.">
 <meta property="og:image" content="https://lulllz4.github.io/GrimGrace/bannerPLOT1_GrimGrace.jpg">
 <meta property="og:type" content="website">
 <link rel="icon" type="image/png" href="https://lulllz4.github.io/GrimGrace/favicon-16x16.png">
@@ -1434,16 +1432,19 @@ try {
   }
 
   /* повторный заход — без долгого вступления */
-  .no-intro .epigraph,
-  .no-intro h1,
-  .no-intro .script-line,
-  .no-intro .header-player,
-  .no-intro nav.main-nav,
-  .no-intro .site-search,
-  .no-intro header .flourish .draw,
-  .no-intro header .flourish .gem {
-    animation-delay: 0s !important;
-    animation-duration: .6s !important;
+  @media (prefers-reduced-motion: no-preference) {
+    .no-intro .epigraph,
+    .no-intro h1,
+    .no-intro .script-line,
+    .no-intro .header-player,
+    .no-intro nav.main-nav,
+    .no-intro .site-search,
+    .no-intro .crest,
+    .no-intro header .flourish .draw,
+    .no-intro header .flourish .gem {
+      animation-delay: 0s !important;
+      animation-duration: .6s !important;
+    }
   }
 
   /* глава после появления не держит лишний слой */
@@ -1529,7 +1530,110 @@ try {
     }
   }
 
-  
+  /* =====================================================
+     ТОНКИЕ ДЕТАЛИ
+     ===================================================== */
+
+  :root { --silver: #b9bcc0; }
+
+  /* --- монограмма: волосяные линии --- */
+  .crest {
+    display: block;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 24px;
+    overflow: visible;
+    opacity: 0;
+    animation: fadeDown 1.6s 0.1s ease forwards;
+  }
+  .crest .crest-line {
+    fill: none;
+    stroke: var(--crimson);
+    stroke-width: 0.8;
+  }
+  .crest .crest-line.thin {
+    stroke: var(--silver);
+    stroke-width: 0.5;
+    stroke-opacity: 0.3;
+  }
+  .crest .crest-text {
+    font-family: 'Cormorant SC', serif;
+    font-size: 27px;
+    fill: var(--bone-dim);
+  }
+  .crest .crest-gem { fill: var(--crimson-hi); }
+
+  /* --- серебро только в центральном ромбе орнамента --- */
+  .flourish .gem { fill: var(--silver); }
+
+  /* --- заголовки разделов: по центру, волосяные линии с двух сторон --- */
+  .prose h3.section-title {
+    justify-content: center;
+    text-align: center;
+  }
+  .prose h3.section-title::before,
+  .prose h3.section-title::after {
+    content: '';
+    flex: 1;
+    min-width: 18px;
+    height: 1px;
+  }
+  .prose h3.section-title::before { background: linear-gradient(to left, var(--hairline), transparent); }
+  .prose h3.section-title::after  { background: linear-gradient(to right, var(--hairline), transparent); }
+  .masquerade .prose h3.section-title::before { background: linear-gradient(to left, var(--gold-hair), transparent); }
+
+  /* --- скрытая маска за заголовком: гравировка, которую замечаешь не сразу --- */
+  .veil-mask {
+    position: absolute;
+    left: 50%;
+    top: clamp(10px, 4vh, 40px);
+    width: min(1040px, 150vw);
+    height: auto;
+    transform: translateX(-50%);
+    z-index: -1;
+    pointer-events: none;
+    overflow: visible;
+    opacity: 0;
+    animation: veilAppear 4s 1.2s ease forwards;
+  }
+  @keyframes veilAppear { to { opacity: 1; } }
+  .veil-mask .vm-line {
+    fill: none;
+    stroke: var(--crimson-hi);
+    stroke-opacity: 0.16;
+    stroke-width: 0.7;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .veil-mask .vm-line.faint { stroke-opacity: 0.09; }
+  .veil-mask .vm-tear {
+    fill: var(--crimson-hi);
+    fill-opacity: 0.24;
+  }
+  @media (max-width: 640px) {
+    .veil-mask { top: 104px; width: 120vw; }
+  }
+  @media (max-width: 480px) {
+    .veil-mask { top: 118px; width: 160vw; }
+  }
+  .no-intro .veil-mask { animation-delay: 0s; animation-duration: 1.2s; }
+
+  /* --- печать на закрытой главе: маленькая --- */
+  .sealed {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .wax-seal {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    transform: rotate(-8deg);
+    opacity: 0.85;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
+  }
+
 </style>
 </head>
 <body>
@@ -1538,6 +1642,37 @@ try {
 <div class="read-progress" id="readProgress"></div>
 
 <header>
+  <svg class="veil-mask" viewBox="0 0 200 116" aria-hidden="true" focusable="false">
+    <!-- внешний контур -->
+    <path class="vm-line" d="M100,28 C122,13 156,15 174,31 C190,45 186,65 168,75 C148,86 122,81 108,67 C103,62 100,55 100,49"/>
+    <path class="vm-line" d="M100,28 C78,13 44,15 26,31 C10,45 14,65 32,75 C52,86 78,81 92,67 C97,62 100,55 100,49"/>
+    <!-- внутренний контур, как второй резец гравёра -->
+    <g transform="translate(100 49) scale(0.92) translate(-100 -49)">
+      <path class="vm-line faint" d="M100,28 C122,13 156,15 174,31 C190,45 186,65 168,75 C148,86 122,81 108,67 C103,62 100,55 100,49"/>
+      <path class="vm-line faint" d="M100,28 C78,13 44,15 26,31 C10,45 14,65 32,75 C52,86 78,81 92,67 C97,62 100,55 100,49"/>
+    </g>
+    <!-- прорези глаз -->
+    <ellipse class="vm-line" cx="62" cy="44" rx="16" ry="9" transform="rotate(-10 62 44)"/>
+    <ellipse class="vm-line" cx="138" cy="44" rx="16" ry="9" transform="rotate(10 138 44)"/>
+    <!-- завиток надо лбом -->
+    <path class="vm-line" d="M100,28 C100,17 93,9 84,7 C93,4 100,11 100,17"/>
+    <path class="vm-line" d="M100,28 C100,17 107,9 116,7 C107,4 100,11 100,17"/>
+    <!-- ленты -->
+    <path class="vm-line" d="M18,54 C7,56 5,65 12,69"/>
+    <path class="vm-line" d="M182,54 C193,56 195,65 188,69"/>
+    <path class="vm-line faint" d="M12,69 C4,78 12,88 5,98 C1,104 3,110 6,114"/>
+    <path class="vm-line faint" d="M188,69 C196,78 188,88 195,98 C199,104 197,110 194,114"/>
+    <!-- одна кровавая слеза под правым глазом -->
+    <path class="vm-tear" d="M146,53.6 C146.7,55.1 147.3,56.1 147.3,56.9 A1.3,1.3 0 0 1 144.7,56.9 C144.7,56.1 145.3,55.1 146,53.6 Z"/>
+  </svg>
+  <svg class="crest" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+    <path class="crest-line" d="M60 6 L114 60 L60 114 L6 60 Z"/>
+    <path class="crest-line thin" d="M60 15 L105 60 L60 105 L15 60 Z"/>
+    <path class="crest-gem" d="M60 21 l4 4 -4 4 -4 -4z"/>
+    <path class="crest-gem" d="M60 91 l4 4 -4 4 -4 -4z"/>
+    <text class="crest-text" x="60" y="70" text-anchor="middle">GG</text>
+  </svg>
+
   <p class="epigraph" lang="en">The United Kingdom of Great Britain and Northern Ireland · 1852</p>
   <h1>Grim Grace | RP</h1>
   <p class="script-line" lang="en">What's hidden behind the masks...</p>
@@ -1699,10 +1834,28 @@ try {
         </div>
       </details>
 
-            <div class="story-arc story-arc-locked" id="arc-chapter2" aria-disabled="true">
+      <div class="story-arc story-arc-locked" id="arc-chapter2" aria-disabled="true">
         <div class="story-toggle">
           <span>Глава II</span>
-          <span class="lock-label">Скоро откроется...</span>
+          <span class="sealed">
+            <span class="lock-label">Запечатано</span>
+            <svg class="wax-seal" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+              <defs>
+                <radialGradient id="waxGrad" cx="36%" cy="30%" r="72%">
+                  <stop offset="0%" stop-color="#c8232f"/>
+                  <stop offset="50%" stop-color="#7a0b14"/>
+                  <stop offset="100%" stop-color="#2b0306"/>
+                </radialGradient>
+              </defs>
+              <path fill="url(#waxGrad)" d="M32 3 C39 2 44 7 50 9 C57 12 60 19 61 26 C63 33 59 38 60 45 C60 52 53 57 46 59 C40 62 35 60 30 61 C23 62 16 60 11 55 C6 50 4 44 4 37 C3 30 1 24 5 18 C9 12 15 9 21 6 C25 4 28 4 32 3 Z"/>
+              <circle cx="32" cy="32" r="19" fill="none" stroke="#3d0409" stroke-width="1.4"/>
+              <circle cx="32" cy="32" r="19" fill="none" stroke="#e0505b" stroke-width="0.5" stroke-opacity="0.35" transform="translate(-0.6 -0.6)"/>
+              <circle cx="32" cy="32" r="15.5" fill="none" stroke="#3d0409" stroke-width="0.7" stroke-dasharray="1.5 2"/>
+              <text x="32" y="39" text-anchor="middle" font-family="Cormorant SC, serif" font-size="20" fill="#3d0409">II</text>
+              <text x="31.4" y="38.4" text-anchor="middle" font-family="Cormorant SC, serif" font-size="20" fill="#e0505b" fill-opacity="0.25">II</text>
+              <ellipse cx="22" cy="17" rx="7" ry="3.5" fill="#ffffff" fill-opacity="0.10" transform="rotate(-30 22 17)"/>
+            </svg>
+          </span>
         </div>
       </div>
       
@@ -2411,7 +2564,7 @@ try {
     });
   });
 
-window.addEventListener('hashchange', function () {
+  window.addEventListener('hashchange', function () {
     var id = location.hash.slice(1);
     if (TAB_IDS.indexOf(id) !== -1) {
       activateTab(id, { updateHash: false });
@@ -2461,7 +2614,7 @@ window.addEventListener('hashchange', function () {
   var miniPlayer   = document.getElementById('miniPlayer');
   var headerEl     = document.querySelector('header');
   var scrollTicking = false;
-    var hasPlayed = false;
+  var hasPlayed = false;
 
   function onScrollFrame() {
     scrollTicking = false;
@@ -2487,7 +2640,7 @@ window.addEventListener('hashchange', function () {
 
   /* ================= ПЕРВОЕ ПОЯВЛЕНИЕ ================= */
 
-window.addEventListener('load', function () {
+  window.addEventListener('load', function () {
     var hashId = location.hash.slice(1);
     var hasHashTab = TAB_IDS.indexOf(hashId) !== -1;
     var isAnchor = !hasHashTab && hashId && document.getElementById(hashId);
@@ -2545,7 +2698,7 @@ window.addEventListener('load', function () {
 
   audio.volume = parseFloat(volumeSlider.value);
 
-    var volProbe = document.createElement('audio');
+  var volProbe = document.createElement('audio');
   volProbe.volume = 0.5;
   if (volProbe.volume === 1) volumeSlider.style.display = 'none';
 
@@ -2623,7 +2776,7 @@ window.addEventListener('load', function () {
   miniNext.addEventListener('click', function () { loadTrack(current + 1, true); });
 
   audio.addEventListener('play',  updatePlayIcon);
-    audio.addEventListener('play', function () {
+  audio.addEventListener('play', function () {
     hasPlayed = true;
     onScrollFrame();
   });
@@ -2659,7 +2812,7 @@ window.addEventListener('load', function () {
   loadTrack(0, false);
   updateMuteBtn();
 
-    document.querySelectorAll('.banner-img img').forEach(function (img) {
+  document.querySelectorAll('.banner-img img').forEach(function (img) {
     if (img.complete) img.classList.add('loaded');
     else {
       img.addEventListener('load',  function () { img.classList.add('loaded'); });
@@ -2711,7 +2864,7 @@ window.addEventListener('load', function () {
            });
     });
 
-        searchInput.addEventListener('keydown', function (e) {
+    searchInput.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
         searchInput.value = '';
         searchResults.innerHTML = '';
